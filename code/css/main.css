@@ -1,0 +1,31 @@
+@font-face {
+  font-family: 'tstar_twregular';
+  src: url("fonts/tstar_tw-regular-webfont.eot");
+  src: url("fonts/tstar_tw-regular-webfont.ttf") format('truetype'), url("fonts/tstar_tw-regular-webfont.eot?#iefix") format('embedded-opentype'), url("fonts/tstar_tw-regular-webfont.woff") format('woff'), url("fonts/tstar_tw-regular-webfont.svg#tstar_twregular") format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #000;
+  color: #fff;
+  font-family: 'tstar_twregular';
+}
+
+#container, #paperjs-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.infos {
+  position: absolute;
+  bottom: 0px;
+  left: 20px;
+}
+
+.infos h1 { margin-bottom:-5px;}

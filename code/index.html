@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+  <head>
+    <meta charset="UTF-8">
+    <title>HandLine</title>
+    <link rel="stylesheet" href="css/main.css">
+  </head>
+
+  <body>
+
+    <!-- Container -->
+
+    <div id="container">
+      <canvas id="paperjs-canvas" data-paper-resize="true"></canvas>
+    </div>
+
+    <!-- Project Infos -->
+
+    <div class="infos">
+      <h1></h1>
+      <p></p>
+    </div>
+
+    <!-- Default Libs -->
+
+    <script src="libs/default/paper-core.min.js"></script>
+    <script src="libs/default/jquery-2.1.1.min.js"></script>
+    <script src="libs/default/kinect2-socket.min.js"></script>
+    <script src="libs/default/matter-0.8.0.min.js"></script>
+    <script src="libs/default/howler.min.js"></script>
+    <script src="libs/default/TweenMax.min.js"></script>
+
+    <!-- Apps -->
+
+    <script src="js/handline.v01.js"></script>
+
+    <script>
+
+      function getParam(sParam) {
+        sPageURL = window.location.search.substring(1);
+        sURLVariables = sPageURL.split('&');
+        for (var sURLVar in sURLVariables) {
+          sParameterName = sURLVariables[sURLVar].split('=');
+          if (sParameterName[0] == sParam) return sParameterName[1];
+        }
+      }
+
+      function setInfos(infos) {
+        $('.infos h1').html(infos.projectName);
+        $('.infos p').html(infos.author1 + ' &amp; ' + infos.author2);
+      }
+
+      var currFileLoading = -1;
+      var filesToLoad = null;
+
+      function includeNext(loadCallback) {
+        include(filesToLoad[currFileLoading], function() {
+          currFileLoading++;
+          if (currFileLoading < filesToLoad.length) {
+            includeNext(loadCallback);
+          } else {
+            if(loadCallback) loadCallback();
+          }
+        });
+      }
+
+      function include(path, loadCallback) {
+        if (typeof path == "object" && path.length > 1) {
+          filesToLoad = path
+          currFileLoading = 0;
+          includeNext(loadCallback);
+          return;
+        }
+
+        var s = document.createElement("script");
+        s.type = "text/javascript";
+        s.src = path;
+        document.body.appendChild(s);
+
+        console.log("loading " +path);
+
+        if (loadCallback) {
+          $(s).load(loadCallback);
+        }
+      }
+
+      var scene = getParam('app') || 'default';
+      include("js/apps/"+scene+".js", function() {
+        setup();
+      });
+      
+    </script>
+  </body>
+</html>
