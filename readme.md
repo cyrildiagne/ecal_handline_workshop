@@ -71,7 +71,12 @@ git clone https://github.com/kikko/ecal_handline_workshop.git
 
 Then enter this directory with `cd ecal_handline_workshop.git`
 
-And launch a local webserver using the provided command file (you can also double click on the file):
+Make sure you have [nodejs](http://nodejs.org) installed on your machine and install the http-server module globally :
+```
+npm install -g http-server
+```
+
+Then you can launch a local webserver using the provided command file (you can also double click on the file):
 ```
 ./launch.command
 ```
