@@ -8,6 +8,13 @@
 
 ----
 
+*« Le chemin le plus court d'un point à un autre est la ligne droite,
+à condition que les deux points soient bien en face l'un de l'autre. »*
+
+Pierre Dac
+
+----
+
 ## Brief
 
 ```
