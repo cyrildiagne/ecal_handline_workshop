@@ -69,7 +69,7 @@ First clone the repository using your favorite terminal application (I highly re
 git clone https://github.com/kikko/ecal_handline_workshop.git
 ```
 
-Then enter this directory with `cd ecal_handline_workshop.git`
+Then enter this directory with `cd ecal_handline_workshop`
 
 Make sure you have [nodejs](http://nodejs.org) installed on your machine and install the http-server module globally :
 ```
