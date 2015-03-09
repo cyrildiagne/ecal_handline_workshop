@@ -19,8 +19,14 @@ Pierre Dac
 
 ```
 Imagine and create an interactive application based on the body tracking technology
-that stages the virtual line linking our 2 hands
+that stages the virtual line linking our 2 hands.
 ```
+
+* Work as duos
+
+* The application can't use any other tracking information than the hands position (and eventually their open/closed status).
+
+* It's not mandatory but highly encouranged to implement a multi-user system (up to 2 people)
 
 
 Examples of geometrical properties of this line that you can use :
@@ -125,7 +131,7 @@ To publish your app, you must follow the following rules :
 - commit and push your changes
 - ask for a pull request on the main fork
 
-In order to publish your app easily, you ** shouldn't modify**  any other file than your `js/apps/yourappname.js` file (for example files like `index.html`, `css/main.css`...etc)
+In order to publish your app easily, you **shouldn't modify**  any other file than your `js/apps/yourappname.js` file (for example files like `index.html`, `css/main.css`...etc)
 
 Also, don't forget to fill in your project details in your app file :
 ```javascript
