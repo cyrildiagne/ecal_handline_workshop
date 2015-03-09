@@ -60,10 +60,10 @@ It integrates :
 
 First clone the repository using your favorite terminal application (I highly recommend the free [iTerm2](http://iterm2.com) on mac) 
 ```
-git clone *this repo*
+git clone https://github.com/kikko/ecal_handline_workshop.git
 ```
 
-Then enter this directory with `cd *folder name*`
+Then enter this directory with `cd ecal_handline_workshop.git`
 
 And launch a local webserver using the provided command file (you can also double click on the file):
 ```
