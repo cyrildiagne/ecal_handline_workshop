@@ -138,6 +138,6 @@ function setup() {
     author2 : 'Prenom Nom'
   });
 
-  view = new paper.Group();
+  ...etc
 }
 ```
