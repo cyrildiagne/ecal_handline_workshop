@@ -1,5 +1,4 @@
 var app   = null,
-    view  = null,
     lines = [];
 
 
@@ -14,8 +13,6 @@ function setup() {
     author1 : 'Prenom Nom',
     author2 : 'Prenom Nom'
   });
-
-  view = new paper.Group();
 }
 
 
@@ -53,6 +50,12 @@ function update(dt) {
 /* 
   called everytime a new user enters
   this is usually where you create a new line
+  - leftHand and rightHand are objects structured as :
+  {
+    position : paper.Point,
+    velocity : paper.Point
+    joint : ks.Joint
+  }
 */
 function onUserIn(id, leftHand, rightHand) {
 
@@ -66,7 +69,6 @@ function onUserIn(id, leftHand, rightHand) {
     })
   };
 
-  view.addChild(line.path);
   lines.push(line);
 }
 

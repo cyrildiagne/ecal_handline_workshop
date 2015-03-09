@@ -4,7 +4,6 @@
 */
 
 var app   = null,
-    view  = null,
     lines = [],
     shape = null,
     gui   = null;
@@ -26,14 +25,11 @@ function setup() {
       author2 : 'Prenom Nom'
     });
 
-    view = new paper.Group();
-
     shape = new paper.Path.Circle({
       radius : 20,
       position : paper.view.center,
       fillColor : 'red'
     });
-    view.addChild(shape);
 
     gui = new dat.GUI();
     gui.add(shape.position, 'x', paper.view.center.x-200, paper.view.center.x+200);
@@ -92,7 +88,6 @@ function onUserIn(id, leftHand, rightHand) {
     })
   };
 
-  view.addChild(line.path);
   lines.push(line);
 }
 

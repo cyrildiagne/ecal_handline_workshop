@@ -1,5 +1,4 @@
 var app   = null,
-    view  = null,
     lines = [];
 
 var physics = null,
@@ -17,8 +16,6 @@ function setup() {
     author1 : 'Prenom Nom',
     author2 : 'Prenom Nom'
   });
-
-  view = new paper.Group();
 
   setupPhysics();
 }
@@ -40,7 +37,6 @@ function addBall() {
     fillColor : 'royalblue',
     radius : radius
   });
-  view.addChild(bview);
   balls.push({
     view    : bview,
     fixture : physics.addCircle(bview, radius, {restitution:0.9, friction:0})
@@ -105,7 +101,6 @@ function onUserIn(id, leftHand, rightHand) {
     rightHand : rightHand,
     path : path
   };
-  view.addChild(line.path);
   lines.push(line);
 }
 

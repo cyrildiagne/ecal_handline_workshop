@@ -1,5 +1,4 @@
 var app   = null,
-    view  = null,
     lines = [],
     level = {};
 
@@ -15,13 +14,11 @@ function setup() {
     author2 : 'Prenom Nom'
   });
 
-  view = new paper.Group();
-
   level = {
     lines : []
   };
 
-  // window.addEventListener('keydown', setOnSpotLevel);
+  window.addEventListener('keydown', setOnSpotLevel);
 }
 
 function clearLevel() {
@@ -53,7 +50,6 @@ function setRandomLevel() {
 
     l.rotate(angle);
     level.lines.push(l);
-    view.addChild(level.lines[i]);
   }
 }
 
@@ -71,7 +67,6 @@ function setOnSpotLevel() {
     });
 
     level.lines.push(l);
-    view.addChild(level.lines[i]);
   }
 }
 
@@ -181,7 +176,6 @@ function onUserIn(id, leftHand, rightHand) {
     })
   };
 
-  view.addChild(line.path);
   lines.push(line);
 
   setRandomLevel();
