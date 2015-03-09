@@ -1,5 +1,5 @@
 var app   = null,
-    lines = [];
+    users = [];
 
 var physics = null,
     balls = [],
@@ -59,11 +59,11 @@ function update(dt) {
 
   var i, lpos, rpos, segs;
 
-  for(i=0; i<lines.length; i++) {
+  for(i=0; i<users.length; i++) {
 
-    lpos = lines[i].leftHand.position;
-    rpos = lines[i].rightHand.position;
-    segs = lines[i].path.segments;
+    lpos = users[i].leftHand.position;
+    rpos = users[i].rightHand.position;
+    segs = users[i].line.segments;
 
     segs[0].point.x = lpos.x;
     segs[0].point.y = lpos.y;
@@ -90,18 +90,18 @@ function update(dt) {
 function onUserIn(id, leftHand, rightHand) {
 
   var lineThickness = 30;
-  var path = new paper.Path.Line({
+  var line = new paper.Path.Line({
     strokeColor : HL.colors.light,
     strokeWidth : lineThickness
   });
-  var line = {
+  var user = {
     bodyId    : id,
-    fixture   : physics.addHandLineRect(path, leftHand, rightHand, lineThickness),
+    fixture   : physics.addHandLineRect(line, leftHand, rightHand, lineThickness),
     leftHand  : leftHand,
     rightHand : rightHand,
-    path : path
+    line : line
   };
-  lines.push(line);
+  users.push(user);
 }
 
 
@@ -111,12 +111,12 @@ function onUserIn(id, leftHand, rightHand) {
 */
 function onUserOut(id) {
 
-  for(var i=0; i<lines.length; i++) {
+  for(var i=0; i<users.length; i++) {
 
-    if (lines[i].bodyId == id) {
-      lines[i].path.remove();
-      physics.remove(lines[i].fixture);
-      lines.splice(i, 1);
+    if (users[i].bodyId == id) {
+      users[i].line.remove();
+      physics.remove(users[i].fixture);
+      users.splice(i, 1);
       break;
     }
   }

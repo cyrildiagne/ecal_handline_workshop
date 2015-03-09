@@ -4,7 +4,7 @@
 */
 
 var app   = null,
-    lines = [],
+    users = [],
     shape = null,
     gui   = null;
 
@@ -53,15 +53,15 @@ function resize(w, h) {
 */
 function update(dt) {
 
-  if (!lines.length) return;
+  if (!users.length) return;
 
   var lpos, rpos, segs;
 
-  for(var i=0; i<lines.length; i++) {
+  for(var i=0; i<users.length; i++) {
 
-    lpos = lines[i].leftHand.position;
-    rpos = lines[i].rightHand.position;
-    segs = lines[i].path.segments;
+    lpos = users[i].leftHand.position;
+    rpos = users[i].rightHand.position;
+    segs = users[i].path.segments;
 
     segs[0].point.x = lpos.x;
     segs[0].point.y = lpos.y;
@@ -78,7 +78,7 @@ function update(dt) {
 */
 function onUserIn(id, leftHand, rightHand) {
 
-  var line = {
+  var user = {
     bodyId    : id,
     leftHand  : leftHand,
     rightHand : rightHand,
@@ -88,7 +88,7 @@ function onUserIn(id, leftHand, rightHand) {
     })
   };
 
-  lines.push(line);
+  users.push(user);
 }
 
 
@@ -98,11 +98,11 @@ function onUserIn(id, leftHand, rightHand) {
 */
 function onUserOut(id) {
 
-  for(var i=0; i<lines.length; i++) {
+  for(var i=0; i<users.length; i++) {
 
-    if (lines[i].bodyId == id) {
-      lines[i].path.remove();
-      lines.splice(i, 1);
+    if (users[i].bodyId == id) {
+      users[i].path.remove();
+      users.splice(i, 1);
       break;
     }
   }
