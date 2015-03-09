@@ -1,6 +1,6 @@
 /* 
-  this ap shows how to load and use a list of external libraries
-  in this case the gui library dat-gui
+  this ap shows how to modulate an mp3
+  according to the length of the lines
 */
 
 var app   = null,
