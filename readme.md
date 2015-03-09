@@ -66,12 +66,16 @@ git clone *this repo*
 Then enter this directory with `cd *folder name*`
 
 And launch a local webserver using the provided command file (you can also double click on the file):
-```./launch.command```
+```
+./launch.command
+```
 
 This should start the server and open a web page with the default application.
 
 To load a different default application you can use the url parameter `?app` for example if you want to load the Balls app :
-```http://localhost:8080?app=balls_app```
+```
+http://localhost:8080?app=balls_app
+```
 
 This should load this demo (press TAB to show the debug view) :
 ![image](https://raw.githubusercontent.com/kikko/ecal_handline_workshop/master/screens/balls_app.png)
