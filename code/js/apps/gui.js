@@ -20,7 +20,7 @@ function setup() {
 
     app = new HL.App();
     app.setup({
-      projectName : 'External Lib',
+      projectName : 'External Lib - GUI',
       author1 : 'Prenom Nom',
       author2 : 'Prenom Nom'
     });

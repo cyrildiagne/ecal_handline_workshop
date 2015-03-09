@@ -4,43 +4,26 @@
 */
 
 var app   = null,
-    users = [],
-    soundContext = null,
-    tuna = null;
+    users = [];
 
 /* 
   called once at initialisation
 */
 function setup() {
   
-  include([
-
-    "libs/extras/tuna.js"
-
-  ], function() {
-
-    app = new HL.App();
-    app.setup({
-      projectName : 'External Lib',
-      author1 : 'Prenom Nom',
-      author2 : 'Prenom Nom'
-    });
-
-    setupSound();
+  app = new HL.App();
+  app.setup({
+    projectName : 'Tuna - Sound Effects',
+    author1 : 'Prenom Nom',
+    author2 : 'Prenom Nom'
   });
 }
 
 
-function setupSound() {
-
-  soundContext = Howler.ctx;
-  tuna = new Tuna(soundContext);
-}
-
 function addSound() {
 
   // create our sound effect
-  var phaser = new tuna.Phaser({
+  var phaser = new HL.sound.tuna.Phaser({
     rate: 1.2,        // 0.01 to 8 is a decent range, but higher values are possible
     depth: 0.8,       // 0 to 1
     feedback: 0.9,    // 0 to 1+
@@ -48,7 +31,7 @@ function addSound() {
     baseModulationFrequency: 500, //500 to 1500
     bypass: 0
   });
-  phaser.connect(soundContext.destination);
+  phaser.connect(HL.sound.context.destination);
 
   // load our sound
   var sound = new Howl({

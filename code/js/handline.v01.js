@@ -177,8 +177,10 @@ HL.App.prototype.setup = function (infos) {
 
   if(typeof setInfos !== 'undefined') setInfos(infos);
 
+  // kinect
   this.setupKinect();
 
+  // gfx
   var canvas = document.getElementById('paperjs-canvas');
   paper.setup(canvas);
 
@@ -219,8 +221,10 @@ HL.App.prototype.resize = function () {
   for(var i=0; i<this.bodies.length; i++){
     this.bodies[i].view.resize(paper.view.bounds);
   }
+  window.stageWidth = paper.view.bounds.width;
+  window.stageHeight = paper.view.bounds.height;
   if (typeof resize !== "undefined") {
-    resize(paper.view.bounds.width, paper.view.bounds.height);
+    resize(window.stageWidth, window.stageHeight);
   }
 };
 
@@ -283,6 +287,31 @@ HL.App.prototype.onKinectUserOut = function (event) {
   onUserOut(event.body.id);
 };
 
+
+// ---- GEOM ----
+
+
+HL.geom = {
+
+  sqr : function(x) {
+    return x * x;
+  },
+
+  dist2 : function(v, w) {
+    return HL.geom.sqr(v.x - w.x) + HL.geom.sqr(v.y - w.y);
+  },
+
+  // http://jsfiddle.net/mmansion/9K5p9/
+  distToSegmentSquared : function(p, v, w) {
+    var dist2 = HL.geom.dist2;
+    var l2 = dist2(v, w);
+    if (l2 === 0) return dist2(p, v);
+    var t = ((p.x - v.x) * (w.x - v.x) + (p.y - v.y) * (w.y - v.y)) / l2;
+    if (t < 0) return dist2(p, v);
+    if (t > 1) return dist2(p, w);
+    return dist2(p, { x: v.x + t * (w.x - v.x), y: v.y + t * (w.y - v.y) });
+  }
+};
 
 
 // ---- PHYSICS ----
@@ -424,6 +453,7 @@ HL.Physics.prototype.update = function(dt) {
 };
 
 
+
 // ---- SOUND ----
 
 
@@ -435,5 +465,9 @@ HL.sound = {
     url = "assets/"+url;
     this.cache[url] = this.cache[url] || new Howl( {urls: [url]} );
     this.cache[url].play();
-  }
+  },
+
+  context : Howler.ctx,
+
+  tuna : new Tuna(Howler.ctx)
 };

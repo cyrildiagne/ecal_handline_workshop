@@ -9,7 +9,7 @@ function setup() {
 
   app = new HL.App();
   app.setup({
-    projectName : 'Shapematch',
+    projectName : 'Shape Match',
     author1 : 'Prenom Nom',
     author2 : 'Prenom Nom'
   });

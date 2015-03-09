@@ -60,7 +60,7 @@ function onUserIn(id, leftHand, rightHand) {
   // create a line with paperjs
   var line = new paper.Path.Line({
     strokeColor : 'white',
-    strokeWidth : 20
+    strokeWidth : 5
   });
 
   // create an object defining our user's properties
