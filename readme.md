@@ -2,7 +2,7 @@
 
 09.03.2015
 
-1 week workshop @ ECAL with 2nd year Media and Interaction Design
+1 week workshop at [ECAL](http://ecal.ch) with 2nd year Media and Interaction Design
 
 ![image](https://raw.githubusercontent.com/kikko/ecal_handline_workshop/master/screens/default.png)
 
@@ -18,7 +18,7 @@ Pierre Dac
 ## Brief
 
 ```
-Imagine and create an interactive application based on the body tracking technology
+Design and create an interactive application based on the body tracking technology
 that stages the virtual line linking our 2 hands.
 ```
 
