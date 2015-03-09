@@ -74,7 +74,7 @@ This should start the server and open a web page with the default application.
 
 To load a different default application you can use the url parameter `?app` for example if you want to load the Balls app :
 ```
-http://localhost:8080?app=balls_app
+http://localhost:8080?app=balls
 ```
 
 This should load this demo (press TAB to show the debug view) :
@@ -100,7 +100,20 @@ The default app defines 5 functions that are called automatically by the framewo
 
 The best way for now to get the full list of available features from the framework is to look at the examples and the source file `js/handline.vXX.js` 
 
-You can also easily extend the functionalities with exteral libraris using the `include` util. The example `js/apps/gui.js` provides an example for loading an external lib directly from a CDN.
+You can also easily extend the functionalities with external libraris using the `include` util. The example `js/apps/gui.js` provides an example for loading an external lib directly from a CDN :
+
+```javascript
+function setup() {
+  include([
+    "https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5/dat.gui.min.js"
+  ], function() {
+    
+    gui = new dat.GUI();
+    
+    ...etc
+  });
+}
+```
 
 ### Publish your app
 
@@ -113,3 +126,18 @@ To publish your app, you must follow the following rules :
 - ask for a pull request on the main fork
 
 In order to publish your app easily, you ** shouldn't modify**  any other file than your `js/apps/yourappname.js` file (for example files like `index.html`, `css/main.css`...etc)
+
+Also, don't forget to fill in your project details in your app file :
+```javascript
+function setup() {
+  
+  app = new HL.App();
+  app.setup({
+    projectName : 'Default',
+    author1 : 'Prenom Nom',
+    author2 : 'Prenom Nom'
+  });
+
+  view = new paper.Group();
+}
+```
