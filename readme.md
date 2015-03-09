@@ -105,7 +105,7 @@ The default app defines 5 functions that are called automatically by the framewo
 - `resize(width, height)` is called when the window is resized
 - `update()` is called at ~60hz when the window has the focus
 - `onUserIn(id, leftHand, rightHand)` is called when a user starts being tracked
-- `onUserIn(id)` is called when a user stops being tracked
+- `onUserOut(id)` is called when a user stops being tracked
 
 ### Available features
 
