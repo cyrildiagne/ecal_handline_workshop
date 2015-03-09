@@ -7,21 +7,16 @@ var app   = null,
 */
 function setup() {
   
+  // create an HL app to start retrieving kinect datas
+  // and automatically call the function update, onUserIn and onUserOut
   app = new HL.App();
+
+  // set it up with our project's metadatas
   app.setup({
     projectName : 'Default',
     author1 : 'Prenom Nom',
     author2 : 'Prenom Nom'
   });
-}
-
-
-/* 
-  called when the window is resized
-  w & h are the new canvas dimensions
-*/
-function resize(w, h) {
-
 }
 
 
@@ -35,14 +30,16 @@ function update(dt) {
 
   for(var i=0; i<users.length; i++) {
 
-    lpos = users[i].leftHand.position;
-    rpos = users[i].rightHand.position;
-    segs = users[i].line.segments;
+    // update the position of each line with the new hands positions
+    
+    leftHandPos  = users[i].leftHand.position;
+    rightHandPos = users[i].rightHand.position;
+    lineSegments = users[i].line.segments;
 
-    segs[0].point.x = lpos.x;
-    segs[0].point.y = lpos.y;
-    segs[1].point.x = rpos.x;
-    segs[1].point.y = rpos.y;
+    lineSegments[0].point.x = leftHandPos.x;
+    lineSegments[0].point.y = leftHandPos.y;
+    lineSegments[1].point.x = rightHandPos.x;
+    lineSegments[1].point.y = rightHandPos.y;
   }
 }
 
@@ -55,20 +52,26 @@ function update(dt) {
     position : paper.Point,
     velocity : paper.Point
     joint : ks.Joint
+    state : "unknown", "open" or "closed"
   }
 */
 function onUserIn(id, leftHand, rightHand) {
 
+  // create a line with paperjs
+  var line = new paper.Path.Line({
+    strokeColor : 'white',
+    strokeWidth : 20
+  });
+
+  // create an object defining our user's properties
   var user = {
     bodyId    : id,
     leftHand  : leftHand,
     rightHand : rightHand,
-    line : new paper.Path.Line({
-      strokeColor : HL.colors.light,
-      strokeWidth : 20
-    })
+    line      : line
   };
 
+  // and add it to our users table
   users.push(user);
 }
 

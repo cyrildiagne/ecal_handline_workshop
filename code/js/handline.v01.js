@@ -227,8 +227,12 @@ HL.App.prototype.resize = function () {
 HL.App.prototype.update = function (event) {
 
   this.ksDebug.render();
+  var b;
   for(var i=0; i<this.bodies.length; i++) {
-    this.bodies[i].view.update();
+    b = this.bodies[i];
+    b.view.update();
+    b.view.joints[ks.JointType.LEFT_HAND_TIP].state = b.body.leftHandState;
+    b.view.joints[ks.JointType.RIGHT_HAND_TIP].state = b.body.rightHandState;
   }
   update(event.delta*1000, this.bodies);
 };
@@ -259,7 +263,11 @@ HL.App.prototype.onKinectUserIn = function (event) {
   this.bodies.push(b);
   b.view.resize(paper.view.bounds);
   this.view.insertChild(0, b.view.view);
-  onUserIn(event.body.id, b.view.joints[ks.JointType.LEFT_HAND_TIP], b.view.joints[ks.JointType.RIGHT_HAND_TIP]);
+  var left = b.view.joints[ks.JointType.LEFT_HAND_TIP];
+  left.state = b.body.leftHandState;
+  var right = b.view.joints[ks.JointType.RIGHT_HAND_TIP];
+  right.state = b.body.rightHandState;
+  onUserIn(event.body.id, left, right);
 };
 
 HL.App.prototype.onKinectUserOut = function (event) {

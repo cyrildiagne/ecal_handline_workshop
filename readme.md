@@ -102,10 +102,10 @@ You can then use the name you give to that file as a url parameter to load it.
 The default app defines 5 functions that are called automatically by the framework :
 
 - `setup()` is called once when the application is loaded
-- `resize(width, height)` is called when the window is resized
 - `update(dt)` is called at ~60hz when the window has the focus
 - `onUserIn(id, leftHand, rightHand)` is called when a user starts being tracked
 - `onUserOut(id)` is called when a user stops being tracked
+- *optional* : `resize(width, height)` is called when the window is resized
 
 ### Available features
 
