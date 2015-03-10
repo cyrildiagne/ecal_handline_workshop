@@ -256,9 +256,9 @@ HL.App.prototype.setupKinect = function () {
     this.ksProxy.connect(socket);
   } else {
     this.ksProxy = new ks.Playback(this.ksTracker);
-    replay = replay || 'replays/2_users.json.gz';
+    replay = replay || '2_users.json.gz';
     if(replay) {
-      this.ksProxy.play(replay, 30);
+      this.ksProxy.play('replays/'+replay, 30);
     }
   }
 
