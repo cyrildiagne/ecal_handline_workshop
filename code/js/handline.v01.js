@@ -246,11 +246,21 @@ HL.App.prototype.setupKinect = function () {
   this.ksTracker.addListener('user_in',  $.proxy(this.onKinectUserIn, this));
   this.ksTracker.addListener('user_out', $.proxy(this.onKinectUserOut, this));
 
-  this.ksProxy = new ks.Playback(this.ksTracker);
-  this.ksProxy.play('replays/2_users.json.gz', 30);
-
-  // this.ksProxy = new ks.SocketStream(this.ksTracker);
-  // this.ksProxy.connect("ws://192.168.0.40:9092");
+  // this.ksProxy = new ks.Playback(this.ksTracker);
+  // this.ksProxy.play('replays/2_users.json.gz', 30);
+  var socket = getParam('socket');
+  var replay = getParam('replay');
+  if (socket) {
+    this.ksProxy = new ks.SocketStream(this.ksTracker);
+    // this.ksProxy.connect("ws://192.168.0.40:9092");
+    this.ksProxy.connect(socket);
+  } else {
+    this.ksProxy = new ks.Playback(this.ksTracker);
+    replay = replay || 'replays/2_users.json.gz';
+    if(replay) {
+      this.ksProxy.play(replay, 30);
+    }
+  }
 
   this.ksDebug = new ks.DebugView(this.ksTracker);
   this.ksDebug.proxy = this.ksProxy;

@@ -52,7 +52,7 @@ function update(dt) {
     position : paper.Point,
     velocity : paper.Point
     joint : ks.Joint
-    state : "unknown", "open" or "closed"
+    state : "unknown", "nottracked", "open" or "closed"
   }
 */
 function onUserIn(id, leftHand, rightHand) {
