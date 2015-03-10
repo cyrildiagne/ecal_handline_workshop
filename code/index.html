@@ -19,7 +19,8 @@
 
     <div class="infos">
       <h1></h1>
-      <p></p>
+      <p class="authors"></p>
+      <p class="instructions"></p>
     </div>
 
     <!-- Default Libs -->
@@ -49,7 +50,10 @@
 
       function setInfos(infos) {
         $('.infos h1').html(infos.projectName);
-        $('.infos p').html(infos.author1 + ' &amp; ' + infos.author2);
+        $('.infos p.authors').html(infos.author1 + ' &amp; ' + infos.author2);
+        if(infos.description){
+          $('.infos p.instructions').html(infos.instructions);
+        }
       }
 
       var currFileLoading = -1;
