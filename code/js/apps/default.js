@@ -32,9 +32,9 @@ function update(dt) {
 
     // update the position of each line with the new hands positions
     
-    leftHandPos  = users[i].leftHand.position;
-    rightHandPos = users[i].rightHand.position;
-    lineSegments = users[i].line.segments;
+    var leftHandPos  = users[i].leftHand.position;
+    var rightHandPos = users[i].rightHand.position;
+    var lineSegments = users[i].line.segments;
 
     lineSegments[0].point.x = leftHandPos.x;
     lineSegments[0].point.y = leftHandPos.y;
