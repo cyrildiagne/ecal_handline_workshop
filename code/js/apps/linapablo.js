@@ -19,7 +19,7 @@ function setup() {
 
   setupPhysics();
 
-  var particules = 30;
+  var particules = 100;
 
   for (var i = 0; i < particules; i++) {
     addBall();
@@ -41,16 +41,17 @@ function setupPhysics() {
 
 function addBall() {
 
-  var radius = 15;
-  var pos = new paper.Point(Math.random()*paper.view.bounds.width/4 + paper.view.bounds.width/4, Math.random()*paper.view.bounds.height/2 + paper.view.bounds.height/4);
+  var radius = 10;
+  var pos = new paper.Point((Math.random()-0.5)*paper.view.bounds.width/2, (Math.random()-0.5)*paper.view.bounds.height/2);
+  pos = pos.add(paper.view.center);
   var bview = new paper.Path.Circle({
     position : pos,
-    fillColor : 'royalblue',
-    radius : radius
+    fillColor : 'white',
+    radius : radius+10
   });
   balls.push({
     view    : bview,
-    fixture : physics.addCircle(bview, radius, {restitution:0.9, friction:1})
+    fixture : physics.addCircle(bview, radius, {restitution:0, friction:1, frictionAir:1 })
   });
 }
 
@@ -84,6 +85,17 @@ function update(dt) {
 
   physics.update();
 
+  for (i = 0; i < balls.length; i++) {
+    // balls[i].fixture.velocity.x = 0;
+    // balls[i].fixture.velocity.y = 0;
+    // balls[i].fixture.appyForce()
+    // balls[i].fixture.inertia = 0.001;
+    // balls[i].fixture.speed = 0.001;
+    // console.log(balls[i]);
+  }
+
+  // Matter.Body.applyForce(balls[i].fixture, balls[i].fixture.position, force);
+
   //if((timeSinceLastBall += dt) > 500) {
   // for (var i = 0; i < 10; i++) {
   //   addBall();
@@ -102,14 +114,14 @@ function update(dt) {
 */
 function onUserIn(id, leftHand, rightHand) {
 
-  var lineThickness = 10;
+  var lineThickness = 15;
   var line = new paper.Path.Line({
-    strokeColor : HL.colors.light,
+    strokeColor : 'blue',
     strokeWidth : lineThickness
   });
   var user = {
     bodyId    : id,
-    fixture   : physics.addHandLineRect(line, leftHand, rightHand, lineThickness),
+    fixture   : physics.addHandLineRect(line, leftHand, rightHand, lineThickness*2),
     leftHand  : leftHand,
     rightHand : rightHand,
     line : line
