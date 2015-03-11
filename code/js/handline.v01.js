@@ -380,7 +380,7 @@ HL.Physics = function() {
   this.engine = Matter.Engine.create({
     positionIterations: 6,
     velocityIterations: 4,
-    enableSleeping: true,
+    enableSleeping: false,
     render: {
       controller: CustomRenderer,
       options: {
