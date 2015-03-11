@@ -134,18 +134,18 @@ HL.BodyView.prototype.resize = function(vp) {
   this.update(1);
 };
 
-HL.BodyView.prototype.update = function(speed) {
+HL.BodyView.prototype.update = function(speed, offset) {
   var bone, jnt, scale, i;
   if (speed === null || typeof speed == 'undefined') {
     speed = 0.5;
   }
   scale = this.width;
-
+  offset = offset || {x:0,y:0};
   var c = paper.view.center;
   for (i=0; i<this.joints.length; i++) {
     jnt = this.joints[i];
-    jnt.velocity.x = (jnt.joint.x * scale + c.x - jnt.position.x) * speed;
-    jnt.velocity.y = (jnt.joint.y * scale + c.y - jnt.position.y) * speed;
+    jnt.velocity.x = (jnt.joint.x * scale + offset.x + c.x - jnt.position.x) * speed;
+    jnt.velocity.y = (jnt.joint.y * scale + offset.y + c.y - jnt.position.y) * speed;
     jnt.position.x += jnt.velocity.x;
     jnt.position.y += jnt.velocity.y;
   }
@@ -171,6 +171,8 @@ HL.App = function() {
   this.ksDebug = null;
 
   this.debugCanvas = null;
+
+  this.usersOffset = new paper.Point(0, 0);
 
   this.view = null;
 };
@@ -271,7 +273,7 @@ HL.App.prototype.update = function (event) {
   var b;
   for(var i=0; i<this.bodies.length; i++) {
     b = this.bodies[i];
-    b.view.update();
+    b.view.update(null, this.usersOffset);
     b.view.joints[ks.JointType.LEFT_HAND_TIP].state = b.body.leftHandState;
     b.view.joints[ks.JointType.RIGHT_HAND_TIP].state = b.body.rightHandState;
   }
@@ -446,7 +448,7 @@ HL.Physics.prototype.addCircle = function(view, radius, opt) {
 
 HL.Physics.prototype.addRectangle = function(view, width, height, opt) {
   opt = opt || { restitution: 0.7, friction : 0.0 };
-  var rect = Matter.Bodies.rectangle(pos.x, pos.y, width, height, opt, 10);
+  var rect = Matter.Bodies.rectangle(view.position.x, view.position.y, width, height, opt, 10);
   rect.view = view;
   Matter.World.add(this.engine.world, rect);
   this.bodies.push({
