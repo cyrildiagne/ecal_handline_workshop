@@ -40,7 +40,7 @@ function update(dt) {
     // GHOST RECORD
     var g = users[i].ghost;
     // if our ghost has less than 40 frames
-    if(g.history.length < 200) {
+    if(g.history.length < 100) {
       // add a new frame
       g.history.push({
         left : users[i].leftHand.position.clone(), // clone main gauche
@@ -61,8 +61,13 @@ function update(dt) {
     if (gh.currFrame >= gh.history.length) {
       gh.currFrame = 0;
     }
-    gh.line.segments[0].point = gh.history[gh.currFrame].left;
-    gh.line.segments[1].point = gh.history[gh.currFrame].right;
+    // gh.line.segments[0].point = gh.history[gh.currFrame].left;
+    // gh.line.segments[1].point = gh.history[gh.currFrame].right;
+    var left = gh.history[gh.currFrame].left;
+    var right = gh.history[gh.currFrame].right;
+    var handsMid = left.add(right).multiply(0.5);
+    var handsVec = left.sub(right);
+    gh.shape.position = handsMid;
   }
 }
 
@@ -86,9 +91,13 @@ function onUserIn(id, leftHand, rightHand) {
     strokeWidth : 5
   });
 
+  var triangle = new paper.Path.RegularPolygon(new paper.Point(180, 70), 3, 20);
+  triangle.fillColor = '#e9e9ff';
+  triangle.selected = true;
+
   // create our ghost
   var ghost = {
-    line : line.clone(),
+    shape : triangle,
     history : [],
     currFrame : -1
   };
