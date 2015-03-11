@@ -434,6 +434,15 @@ HL.Physics.prototype.addRightWall = function() {
   return Matter.World.add(this.engine.world, floor);
 };
 
+HL.Physics.prototype.addUpWall = function() {
+  var w = paper.view.bounds.width;
+  var h = paper.view.bounds.height;
+  var floor = Matter.Bodies.rectangle(w*0.5, -25, w, 50, {
+    isStatic: true
+  });
+  return Matter.World.add(this.engine.world, floor);
+};
+
 HL.Physics.prototype.addCircle = function(view, radius, opt) {
   opt = opt || { restitution: 0.7, friction : 0.0 };
   var circle = Matter.Bodies.circle(view.position.x, view.position.y, radius, opt, 10);
@@ -520,7 +529,7 @@ HL.Physics.prototype.update = function(dt) {
     b = this.bodies[i];
     b.view.position.x = b.body.position.x;
     b.view.position.y = b.body.position.y;
-    b.view.rotation = b.body.angle / Math.PI * 180;
+    b.view.rotation = b.body.angle;
   }
   for (i=0; i<this.handLineBodies.length; i++) {
     this.updateHandLines(this.handLineBodies[i]);
