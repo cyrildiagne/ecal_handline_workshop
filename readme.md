@@ -1,5 +1,7 @@
 # HandsLine Workshop
 
+----
+
 09.03.2015
 
 1 week workshop at [ECAL](http://ecal.ch) with 2nd year Media and Interaction Design
