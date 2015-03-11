@@ -170,6 +170,8 @@ HL.App = function() {
   this.ksProxy = null;
   this.ksDebug = null;
 
+  this.debugCanvas = null;
+
   this.view = null;
 };
 
@@ -209,13 +211,48 @@ HL.App.prototype.toggleDebug = function () {
   this.isDebug = !this.isDebug;
   if (this.isDebug) {
     document.body.appendChild(this.ksDebug.canvas);
+    if(this.debugCanvas) document.body.appendChild(this.debugCanvas);
   } else {
     document.body.removeChild(this.ksDebug.canvas);
+    if(this.debugCanvas) document.body.removeChild(this.debugCanvas);
   }
   if (typeof setDebug !== "undefined") {
     setDebug(this.isDebug);
   }
 };
+
+HL.App.prototype.addDebugCanvas = function(){
+  this.debugCanvas = document.createElement('canvas');
+  this.debugCanvas.width = paper.view.bounds.width;
+  this.debugCanvas.height = paper.view.bounds.height;
+  this.debugCanvas.className = 'debug';
+};
+
+HL.App.prototype.drawDebugLine = function(p0, p1, color) {
+  if(!this.debugCanvas) {
+    this.addDebugCanvas();
+  }
+  if(!this.isDebug) return;
+  var ctx = this.debugCanvas.getContext('2d');
+  ctx.strokeStyle = color;
+  ctx.beginPath();
+  ctx.moveTo(p0.x, p0.y);
+  ctx.lineTo(p1.x, p1.y);
+  ctx.stroke();
+};
+
+HL.App.prototype.drawDebugCircle = function(p, radius, color) {
+  if(!this.debugCanvas) {
+    this.addDebugCanvas();
+  }
+  if(!this.isDebug) return;
+  var ctx = this.debugCanvas.getContext('2d');
+  ctx.strokeStyle = color;
+  ctx.beginPath();
+  ctx.arc(p.x, p.y, radius, 0, Math.PI * 2, false);
+  ctx.stroke();
+};
+
 
 HL.App.prototype.resize = function () {
   for(var i=0; i<this.bodies.length; i++){
@@ -238,6 +275,11 @@ HL.App.prototype.update = function (event) {
     b.view.joints[ks.JointType.LEFT_HAND_TIP].state = b.body.leftHandState;
     b.view.joints[ks.JointType.RIGHT_HAND_TIP].state = b.body.rightHandState;
   }
+
+  if(this.debugCanvas) {
+    this.debugCanvas.getContext('2d').clearRect(0,0,this.debugCanvas.width, this.debugCanvas.height);
+  }
+
   update(event.delta*1000, this.bodies);
 };
 
@@ -360,10 +402,31 @@ HL.Physics = function() {
   this.handLineBodies = [];
 };
 
+//sol
 HL.Physics.prototype.addFloor = function() {
   var w = paper.view.bounds.width;
   var h = paper.view.bounds.height;
   var floor = Matter.Bodies.rectangle(w*0.5, h+25, w, 50, {
+    isStatic: true
+  });
+  return Matter.World.add(this.engine.world, floor);
+};
+
+//mur gauche
+HL.Physics.prototype.addLeftWall = function() {
+  var w = paper.view.bounds.width;
+  var h = paper.view.bounds.height;
+  var floor = Matter.Bodies.rectangle(-25, h*0.5, 50, h, {
+    isStatic: true
+  });
+  return Matter.World.add(this.engine.world, floor);
+};
+
+//mur droit
+HL.Physics.prototype.addRightWall = function() {
+  var w = paper.view.bounds.width;
+  var h = paper.view.bounds.height;
+  var floor = Matter.Bodies.rectangle(w+25, h*0.5, 50, h, {
     isStatic: true
   });
   return Matter.World.add(this.engine.world, floor);
