@@ -1,7 +1,5 @@
 # HandsLine Workshop
 
-----
-
 09.03.2015
 
 ----
