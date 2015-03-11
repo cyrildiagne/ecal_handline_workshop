@@ -360,10 +360,31 @@ HL.Physics = function() {
   this.handLineBodies = [];
 };
 
+//sol
 HL.Physics.prototype.addFloor = function() {
   var w = paper.view.bounds.width;
   var h = paper.view.bounds.height;
   var floor = Matter.Bodies.rectangle(w*0.5, h+25, w, 50, {
+    isStatic: true
+  });
+  return Matter.World.add(this.engine.world, floor);
+};
+
+//mur gauche
+HL.Physics.prototype.addLeftWall = function() {
+  var w = paper.view.bounds.width;
+  var h = paper.view.bounds.height;
+  var floor = Matter.Bodies.rectangle(-25, h*0.5, 50, h, {
+    isStatic: true
+  });
+  return Matter.World.add(this.engine.world, floor);
+};
+
+//mur droit
+HL.Physics.prototype.addRightWall = function() {
+  var w = paper.view.bounds.width;
+  var h = paper.view.bounds.height;
+  var floor = Matter.Bodies.rectangle(w+25, h*0.5, 50, h, {
     isStatic: true
   });
   return Matter.World.add(this.engine.world, floor);
