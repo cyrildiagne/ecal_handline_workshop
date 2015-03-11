@@ -446,7 +446,7 @@ HL.Physics.prototype.addCircle = function(view, radius, opt) {
 
 HL.Physics.prototype.addRectangle = function(view, width, height, opt) {
   opt = opt || { restitution: 0.7, friction : 0.0 };
-  var rect = Matter.Bodies.rectangle(pos.x, pos.y, width, height, opt, 10);
+  var rect = Matter.Bodies.rectangle(view.position.x, view.position.y, width, height, opt, 10);
   rect.view = view;
   Matter.World.add(this.engine.world, rect);
   this.bodies.push({
