@@ -33,14 +33,31 @@ function setupBall() {
     fillColor : 'red'
   });
 
-  velocity = new paper.Point(5 + Math.random()*10, (Math.random()-0.5)*10);
+  // velocity = new paper.Point(5 + Math.random()*10, (Math.random()-0.5)*10);
+  resetBall();
+}
+
+function resetBall() {
+  ball.position = new paper.Point([0, paper.view.center.y]);
+  velocity = new paper.Point(5, 0);
+}
+
+function resetLevel() {
+  for (var i = 0; i < obstacles.length; i++) {
+    obstacles[i].remove();
+  }
+  obstacles.splice(0, obstacles.length);
 }
 
 function setupObstacles() {
+  if(obstacles.length) {
+    resetLevel();
+  }
   for (var i = 0; i < 5; i++) {
-    from = new paper.Point(Math.random()*stageWidth, Math.random()*stageHeight);
-    to = new paper.Point(Math.random()*stageWidth, Math.random()*stageHeight);
-    addObstacle(from, to, 'blue');
+    var from = new paper.Point(Math.random()*stageWidth, Math.random()*stageHeight);
+    var to = new paper.Point(Math.random()*stageWidth, Math.random()*stageHeight);
+    var color = Math.random() < 0.7 ? 'blue' : 'red';
+    addObstacle(from, to, color);
   }
 }
 
@@ -94,6 +111,12 @@ function updateBall() {
     bCollide = checkCollide(ball.position, obstacle.segments[0].point, obstacle.segments[1].point);
     if(bCollide) {
       bounce(ball.position, obstacle.segments[0].point, obstacle.segments[1].point);
+      if(obstacle.strokeColor.toCSS() == 'rgb(0,0,255)') {
+
+      } else {
+        resetBall();
+        setupObstacles();
+      }
     }
   }
 
