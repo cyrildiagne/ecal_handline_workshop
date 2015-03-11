@@ -1,5 +1,6 @@
 var app   = null,
-    users = [];
+    users = [],
+    level = null;
 
 
 /* 
@@ -13,10 +14,50 @@ function setup() {
 
   // set it up with our project's metadatas
   app.setup({
-    projectName : 'Default',
+    projectName : 'Test Parse',
     author1 : 'Prenom Nom',
     author2 : 'Prenom Nom'
   });
+
+  importSVG('assets/testparse/level.svg');
+}
+
+function importSVG(file) {
+
+  paper.project.importSVG(file, function(item){
+    level = new paper.Symbol(item);
+    parse(level.definition);
+    var levelItem = level.place();
+    levelItem.position = paper.view.center;
+  });
+}
+
+function parse(item) {
+
+  var fc = item.fillColor;
+
+  if (fc) {
+    window.fc = fc;
+    console.log(fc.toCSS());
+    if(fc.toCSS() == 'rgb(1,0,0)') {
+      item.visible = false;
+    } else {
+      fc.red = 1;
+      item.rotation = 45;
+    }
+  }
+  else if (item.strokeColor && !item.children) {
+    if(item.type == "circle") {
+    } else {
+      console.log(item.segments[0].point.x);
+      console.log(item.segments[1].point.x);
+    }
+  }
+  else {
+    for (var i = 0; i < item.children.length; i++) {
+      parse( item.children[i] );
+    }
+  }
 }
 
 
@@ -32,9 +73,9 @@ function update(dt) {
 
     // update the position of each line with the new hands positions
     
-    var leftHandPos  = users[i].leftHand.position;
-    var rightHandPos = users[i].rightHand.position;
-    var lineSegments = users[i].line.segments;
+    leftHandPos  = users[i].leftHand.position;
+    rightHandPos = users[i].rightHand.position;
+    lineSegments = users[i].line.segments;
 
     lineSegments[0].point.x = leftHandPos.x;
     lineSegments[0].point.y = leftHandPos.y;
@@ -62,6 +103,7 @@ function onUserIn(id, leftHand, rightHand) {
     strokeColor : 'white',
     strokeWidth : 5
   });
+  line.sendToBack();
 
   // create an object defining our user's properties
   var user = {
