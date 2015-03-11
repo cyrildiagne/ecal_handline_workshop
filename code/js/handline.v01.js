@@ -241,6 +241,17 @@ HL.App.prototype.drawDebugLine = function(p0, p1, color) {
   ctx.stroke();
 };
 
+HL.App.prototype.drawDebugCircle = function(p, radius, color) {
+  if(!this.debugCanvas) {
+    this.addDebugCanvas();
+  }
+  if(!this.isDebug) return;
+  var ctx = this.debugCanvas.getContext('2d');
+  ctx.strokeStyle = color;
+  ctx.beginPath();
+  ctx.arc(p.x, p.y, radius, 0, Math.PI * 2, false);
+  ctx.stroke();
+};
 
 
 HL.App.prototype.resize = function () {
