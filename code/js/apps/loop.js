@@ -38,12 +38,15 @@ function update(dt) {
     var lineSegments = users[i].line.segments;
 
     // GHOST RECORD
+
     var g = users[i].ghost;
-    // if our ghost has less than 40 frames
-    if(g.history.length < 100) {
+
+    // if our ghost has less than 400 frames
+    if(g.history.length < 400) {
+
       // add a new frame
       g.history.push({
-        left : users[i].leftHand.position.clone(), // clone main gauche
+        left : users[i].leftHand.position.clone(),  // clone main gauche
         right : users[i].rightHand.position.clone() // clone main droite
       });
     }
@@ -55,6 +58,7 @@ function update(dt) {
   }
 
   // PLAYBACK RECORD
+
   for (var j=0; j<ghosts.length; j++) {
     var gh = ghosts[j];
     gh.currFrame++;
@@ -66,8 +70,11 @@ function update(dt) {
     var left = gh.history[gh.currFrame].left;
     var right = gh.history[gh.currFrame].right;
     var handsMid = left.add(right).multiply(0.5);
-    var handsVec = left.sub(right);
+    var handsVec = left.subtract(right);
+
+    gh.shape.scaling = handsVec.length / 100 * 0.5;
     gh.shape.position = handsMid;
+    gh.shape.rotation = handsVec.getAngle();
   }
 }
 
@@ -91,9 +98,9 @@ function onUserIn(id, leftHand, rightHand) {
     strokeWidth : 5
   });
 
-  var triangle = new paper.Path.RegularPolygon(new paper.Point(180, 70), 3, 20);
-  triangle.fillColor = '#e9e9ff';
-  triangle.selected = true;
+  var triangle = new paper.Path.RegularPolygon(new paper.Point(0, 0), 3, 100);
+  triangle.fillColor = 'red';
+  triangle.transformContent = false;
 
   // create our ghost
   var ghost = {
