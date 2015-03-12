@@ -72,17 +72,26 @@ function removeBall(ball) {
 function ocrLoop(){
   var ocrText = ocr();
   document.getElementById('projectTitle').innerHTML = ocrText;
-  setTimeout(ocrLoop,1000);
+  setTimeout(ocrLoop,1500);
 
 }
 
 function ocr(){
-  var raster = ballsGroup.rasterize(400);
+  var raster = ballsGroup.rasterize(200);
   
   var imageData = raster.createImageData(raster.size);
   var ocrText = OCRAD(imageData);
 
-  raster.visible = false;
+  //raster.visible = false;
+
+  for (var i = 0; i < balls.length; i++)
+  {
+    var ball = balls[i];
+
+    ball.view.fillColor = 'red';
+
+  }
+
   return ocrText;
 }
 
