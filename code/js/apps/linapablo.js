@@ -3,7 +3,8 @@ var app   = null,
 
 var physics = null,
     balls = [],
-    timeSinceLastBall = 0;
+    timeSinceLastBall = 0,
+    ballsGroup;
 
 /* 
   called once at initialisation
@@ -19,6 +20,13 @@ function setup() {
 
   setupPhysics();
 
+  ballsGroup = new paper.Group();
+  var background = new paper.Rectangle({
+    point: [0, 0],
+    size: [paper.view.bounds.width, paper.view.bounds.height]
+  });
+  ballsGroup.addChild(background);
+
   var particules = 100;
 
   for (var i = 0; i < particules; i++) {
@@ -28,6 +36,8 @@ function setup() {
     }
     
   }
+
+  ocrLoop();
 }
 
 
@@ -41,7 +51,7 @@ function setupPhysics() {
 
 function addBall() {
 
-  var radius = 10;
+  var radius = 20;
   var pos = new paper.Point((Math.random()-0.5)*paper.view.bounds.width/2, (Math.random()-0.5)*paper.view.bounds.height/2);
   pos = pos.add(paper.view.center);
   var bview = new paper.Path.Circle({
@@ -49,6 +59,9 @@ function addBall() {
     fillColor : 'white',
     radius : radius+10
   });
+
+  ballsGroup.addChild(bview);
+
   balls.push({
     view    : bview,
     fixture : physics.addCircle(bview, radius, {restitution:0, friction:1, frictionAir:1 })
@@ -62,11 +75,52 @@ function removeBall(ball) {
   balls.splice(balls.indexOf(ball),1);
 }
 
+function ocrLoop(){
+  var ocrText = ocr();
+  document.getElementById('projectTitle').innerHTML = ocrText;
+  setTimeout(ocrLoop,1500);
+
+}
+
+var colors = ['red', 'green', 'blue', 'yellow', 'purple', 'gray', 'cyan'];
+var index = 0;
+var rasterToRemove;
+
+function ocr(){
+  
+  for (var i = 0; i < balls.length; i++)
+  {
+    var ball = balls[i];
+    ball.view.fillColor = 'black';
+    
+    console.log("parcours")
+  }
+  index = (index + 1) % colors.length;
+  
+  var raster = ballsGroup.rasterize(10);
+  var imageData = raster.createImageData(raster.size);
+  
+  var ocrText = OCRAD(imageData);
+
+  //raster.visible = false;
+  for (var i = 0; i < balls.length; i++)
+  {
+    var ball = balls[i];
+    ball.view.fillColor = 'white';
+  }
+  
+
+  if (rasterToRemove) rasterToRemove.remove();
+
+  rasterToRemove = raster;
+  return ocrText;
+}
 
 /* 
   called about 60 times per seconds
   dt : deltaTime since last frames (in milliseconds);
 */
+
 function update(dt) {
 
   var i, lpos, rpos, segs;
