@@ -72,12 +72,12 @@ function removeBall(ball) {
 function ocrLoop(){
   var ocrText = ocr();
   document.getElementById('projectTitle').innerHTML = ocrText;
-  setTimeout(ocrLoop,5000);
+  setTimeout(ocrLoop,1000);
 
 }
 
 function ocr(){
-  var raster = ballsGroup.rasterize(50);
+  var raster = ballsGroup.rasterize(400);
   
   var imageData = raster.createImageData(raster.size);
   var ocrText = OCRAD(imageData);
