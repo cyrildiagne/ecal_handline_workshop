@@ -136,7 +136,6 @@ function addBall() {
 
 }
 
-
 function removeBall(ball) {
 
   ball.view.remove();
@@ -145,28 +144,37 @@ function removeBall(ball) {
 }
 
 
+function addMoreBalls(posx){
 
-function addSquare() {
-
-  var wSquare = 100;
-  var hSquare = 100
-  var pos = new paper.Point(Math.random()*paper.view.bounds.width, paper.view.bounds.height-50);
+  
+      
+  var pos = new paper.Point(posx, paper.view.bounds.height-(radius/2)-50);
   //var pos = new paper.Point(paper.view.bounds.width/2, paper.view.bounds.height/2);
 
-  var sview = new paper.Path.Rectangle({
+  var bview = new paper.Path.Circle({
     position : pos,
-    fillColor : 'royalblue',
+    //fillColor : 'royalblue',
+    fillColor : '#3FA2DB',
     //fillColor : '#'+Math.floor(Math.random()*16777215).toString(16),
-    width : wSquare,
-    height: hSquare
+    radius : radius + 15
   });
-  sview.fillColor.alpha = Math.random();
-  balls.push({
-    view    : sview,
-    fixture : physics.addRectangle(sview, wSquare, hSquare, {restitution:0.9, friction:0})
+  bview.fillColor.alpha = Math.random() + 0.2;
+    balls.push({
+    view    : bview,
+    fixture : physics.addCircle(bview, radius, {restitution:0.9, friction:0, density:0.001})
   });
 
+     
+
+
 }
+
+
+function addSound(){
+  var audio = new Audio('assets/tuna/drop01.mp3');
+  audio.play();
+}
+
 
 
 /* 
@@ -199,9 +207,12 @@ var i, bridge;
 
   physics.update();
 
-  var ballscount = 4;
-  if((timeSinceLastBall += dt) > 1000 && balls.length < ballscount) {
+//----------------------------------------------------------------------
+
+  var ballscount = 3;
+  if((timeSinceLastBall += dt) > 500 && balls.length < ballscount) {
     addBall();
+    addSound();
     timeSinceLastBall = 0;
     console.log(timeSinceLastBall);
     
@@ -250,6 +261,8 @@ function checkWinner(){
 
 
 
+
+
      }
      else if(rightWin)
      {
@@ -268,13 +281,29 @@ function checkWinner(){
       .css('top', '100px')
       .css('left', '70%')
       .appendTo('body');
+
+
      }
 
      setTimeout (function(){
       window.location.reload();
-     },10000);
+     },15000);
      gameOver = true;
    }
+
+    if (leftWin){
+         setTimeout (function(){
+      addMoreBalls(paper.view.bounds.width * 0.75);
+      //addSound();
+     },1000);
+    }
+    else if (rightWin){
+               setTimeout (function(){
+      addMoreBalls(paper.view.bounds.width * 0.25);
+      //addSound();
+     },1000);
+
+    }
 };
 
 
