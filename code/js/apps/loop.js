@@ -31,43 +31,41 @@ function update(dt) {
 
   for(var i=0; i<users.length; i++) {
 
-    // update the position of each line with the new hands positions
-    
-    var leftHandPos  = users[i].leftHand.position;
-    var rightHandPos = users[i].rightHand.position;
-    var lineSegments = users[i].line.segments;
-
     // GHOST RECORD
+
     var g = users[i].ghost;
-    // if our ghost has less than 40 frames
-    if(g.history.length < 100) {
+
+    // if our ghost has less than 400 frames
+    if(g.history.length < 400) {
+
       // add a new frame
       g.history.push({
-        left : users[i].leftHand.position.clone(), // clone main gauche
+        left : users[i].leftHand.position.clone(),  // clone main gauche
         right : users[i].rightHand.position.clone() // clone main droite
       });
     }
-
-    lineSegments[0].point.x = leftHandPos.x;
-    lineSegments[0].point.y = leftHandPos.y;
-    lineSegments[1].point.x = rightHandPos.x;
-    lineSegments[1].point.y = rightHandPos.y;
   }
 
   // PLAYBACK RECORD
+
   for (var j=0; j<ghosts.length; j++) {
     var gh = ghosts[j];
     gh.currFrame++;
     if (gh.currFrame >= gh.history.length) {
       gh.currFrame = 0;
     }
-    // gh.line.segments[0].point = gh.history[gh.currFrame].left;
-    // gh.line.segments[1].point = gh.history[gh.currFrame].right;
-    var left = gh.history[gh.currFrame].left;
-    var right = gh.history[gh.currFrame].right;
-    var handsMid = left.add(right).multiply(0.5);
-    var handsVec = left.sub(right);
-    gh.shape.position = handsMid;
+    if(gh.type == 'line') {
+      gh.shape.segments[0].point = gh.history[gh.currFrame].left;
+      gh.shape.segments[1].point = gh.history[gh.currFrame].right;
+    } else {
+      var left = gh.history[gh.currFrame].left;
+      var right = gh.history[gh.currFrame].right;
+      var handsMid = left.add(right).multiply(0.5);
+      var handsVec = left.subtract(right);
+      gh.shape.scaling = handsVec.length / 100 * 0.5;
+      gh.shape.position = handsMid;
+      gh.shape.rotation = handsVec.getAngle();
+    }
   }
 }
 
@@ -85,19 +83,31 @@ function update(dt) {
 */
 function onUserIn(id, leftHand, rightHand) {
 
-  // create a line with paperjs
-  var line = new paper.Path.Line({
-    strokeColor : 'white',
-    strokeWidth : 5
-  });
+  var shape=null, colors=null, type = '';
+  var random = Math.random()*2;
 
-  var triangle = new paper.Path.RegularPolygon(new paper.Point(180, 70), 3, 20);
-  triangle.fillColor = '#e9e9ff';
-  triangle.selected = true;
+  if(random < 1) {
+    type = 'triangle';
+    shape = new paper.Path.RegularPolygon(new paper.Point(0, 0), 3, 100);
+    // get a random color
+    colors = ['red', 'blue', 'green'];
+    shape.fillColor = colors[Math.floor(Math.random()*colors.length)];
+  }
+  else {
+    type = 'line';
+    shape = new paper.Path.Line({ strokeColor : 'white', strokeWidth : 5 });
+    // get a random color
+    colors = ['yellow', 'cyan', 'magenta'];
+    shape.strokeColor = colors[Math.floor(Math.random()*colors.length)];
+  }
+  shape.transformContent = false;
+
+  
 
   // create our ghost
   var ghost = {
-    shape : triangle,
+    shape : shape,
+    type : type,
     history : [],
     currFrame : -1
   };
@@ -109,7 +119,6 @@ function onUserIn(id, leftHand, rightHand) {
     bodyId    : id,
     leftHand  : leftHand,
     rightHand : rightHand,
-    line      : line,
     ghost     : ghost
   };
   // and add it to our users table
@@ -126,7 +135,6 @@ function onUserOut(id) {
   for(var i=0; i<users.length; i++) {
 
     if (users[i].bodyId == id) {
-      users[i].line.remove();
       users.splice(i, 1);
       break;
     }

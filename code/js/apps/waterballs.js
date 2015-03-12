@@ -3,7 +3,10 @@ var app   = null,
 
 var physics = null,
     balls = [],
-    timeSinceLastBall = 0;
+    timeSinceLastBall = 0,
+    squares = [];
+
+var sideBall = true;
 
 
 /* 
@@ -17,11 +20,11 @@ function setup() {
     author1 : 'Prenom Nom',
     author2 : 'Prenom Nom'
   });
+  app.usersOffset.y = 200;
 
   setupPhysics();
-  addWall(paper.view.bounds.height);
-  addWall(0);
-  //addWallUp();
+  addWall(paper.view.bounds.height*0.75);
+  addWall(-paper.view.bounds.height*0.25);
 }
 
 
@@ -51,21 +54,61 @@ function setupPhysics() {
 
 
 
+function addWall(poswall) {
+
+  var wRect = 30;
+  //var hRect = 30;
+
+  var hRect = paper.view.bounds.height/1.5;
+  var pos = new paper.Point(paper.view.bounds.width/2, poswall);
+  var rview = new paper.Path.Rectangle({
+    position : pos,
+    fillColor : 'white',
+    width : wRect,
+    height : hRect
+  });
+  physics.addRectangle(rview, wRect+20, hRect, {restitution:0.9, friction:0, isStatic: true})
+
+
+}
+
 function addBall() {
 
-  var radius = 20;
-  var pos = new paper.Point(Math.random()*paper.view.bounds.width, paper.view.bounds.height);
+  var radius = 30;
+  var posx;
+  
+
+
+  if (sideBall == true){
+    posx = paper.view.bounds.width * 0.25;
+    sideBall = false;
+    console.log("gauche");
+
+  }else if (sideBall == false){
+    posx = paper.view.bounds.width * 0.75;
+    sideBall = true;
+
+    console.log("droite");
+
+  }
+
+
+  var pos = new paper.Point(posx, paper.view.bounds.height-(radius/2)-50);
   //var pos = new paper.Point(paper.view.bounds.width/2, paper.view.bounds.height/2);
 
   var bview = new paper.Path.Circle({
     position : pos,
     fillColor : 'royalblue',
-    radius : radius + 10
+    //fillColor : '#'+Math.floor(Math.random()*16777215).toString(16),
+
+    radius : radius + 15
   });
-  balls.push({
+  bview.fillColor.alpha = Math.random() * 0.8;
+    balls.push({
     view    : bview,
     fixture : physics.addCircle(bview, radius, {restitution:0.9, friction:0})
   });
+
 }
 
 
@@ -77,21 +120,26 @@ function removeBall(ball) {
 }
 
 
-function addWall(poswall) {
 
-  var wRect = 30;
-  //var hRect = 30;
+function addSquare() {
 
-  var hRect = paper.view.bounds.height/1.5;
-  var pos = new paper.Point(paper.view.bounds.width/2, poswall);
-  var rview = new paper.Path.Rectangle({
+  var wSquare = 100;
+  var hSquare = 100
+  var pos = new paper.Point(Math.random()*paper.view.bounds.width, paper.view.bounds.height-50);
+  //var pos = new paper.Point(paper.view.bounds.width/2, paper.view.bounds.height/2);
+
+  var sview = new paper.Path.Rectangle({
     position : pos,
-    fillColor : 'red',
-    width : wRect,
-    height : hRect
+    fillColor : 'royalblue',
+    //fillColor : '#'+Math.floor(Math.random()*16777215).toString(16),
+    width : wSquare,
+    height: hSquare
   });
-  physics.addRectangle(rview, wRect+20, hRect, {restitution:0.9, friction:0, isStatic: true})
-
+  sview.fillColor.alpha = Math.random();
+  balls.push({
+    view    : sview,
+    fixture : physics.addRectangle(sview, wSquare, hSquare, {restitution:0.9, friction:0})
+  });
 
 }
 
@@ -118,12 +166,11 @@ function update(dt) {
 
   physics.update();
 
-  if((timeSinceLastBall += dt) > 100) {
+  if((timeSinceLastBall += dt) > 100 && balls.length < 100) {
     addBall();
-    if(balls.length > 200) {
-      removeBall(balls[0]);
-    }
+    
     timeSinceLastBall = 0;
+
   }
 }
 

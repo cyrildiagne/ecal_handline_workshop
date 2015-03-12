@@ -4,7 +4,10 @@ var app   = null,
 var physics = null,
     balls = [],
     timeSinceLastBall = 0,
-    chain = null;
+    chain = null,
+    constraints = null,
+    numNodesPerChain = 6,
+    chainNodesRadius = 20;
 
 /* 
   called once at initialisation
@@ -19,7 +22,6 @@ function setup() {
   });
 
   setupPhysics();
-  addChain();
 }
 
 
@@ -29,23 +31,26 @@ function setupPhysics() {
   physics.addFloor();
 }
 
-function addChain() {
-  var group = Matter.Body.nextGroupId();
-  
-  chain = Matter.Composites.stack(500, 200, 5, 2, 10, 10, function(x, y, column, row) {
-      return Matter.Bodies.circle(x, y, 20, { collisionFilter: { group: group } });
-      // return Matter.Bodies.circle(x, y, 20);
+function createNewBridge(leftPos, rightPos) {
+
+  var gpId = Matter.Body.nextGroupId();
+  var bridge = Matter.Composites.stack(leftPos.x, leftPos.y, numNodesPerChain, 1, 0, 0, function(x, y, column, row) {
+      return Matter.Bodies.circle(x, y, chainNodesRadius, { groupId: gpId, friction:0, restitution:1 });
   });
   
-  Matter.Composites.chain(chain, 0.5, 0, -0.5, 0, { stiffness: 0.8, length: 2 });
-  Matter.Composite.add(chain, Matter.Constraint.create({
-      bodyB: chain.bodies[0],
-      pointB: { x: 20, y: 0 },
-      pointA: { x: 500, y: 150 },
-      stiffness: 0.5
-  }));
+  Matter.Composites.chain(bridge, 0.5, 0, -0.5, 0, { stiffness: 0.8 });
+
+  var lastBody = bridge.bodies[bridge.bodies.length-1];
+  var cLeft  = Matter.Constraint.create({ stiffness:1, pointA: leftPos,  bodyB: bridge.bodies[0], pointB: { x: 0, y: 0 } });
+  var cRight = Matter.Constraint.create({ stiffness:1, pointA: lastBody.position, bodyB: lastBody, pointB: { x: 0, y: 0 } });
   
-  Matter.World.add(physics.engine.world, chain);
+  Matter.World.add(physics.engine.world, [
+      bridge,
+      cLeft,
+      cRight
+  ]);
+
+  return {bridge:bridge, constraintLeft:cLeft, constraintRight:cRight};
 }
 
 
@@ -60,7 +65,7 @@ function addBall() {
   });
   balls.push({
     view    : bview,
-    fixture : physics.addCircle(bview, radius, {restitution:0.9, friction:0})
+    fixture : physics.addCircle(bview, radius, {restitution:0.9, friction:0, density:0.001})
   });
 }
 
@@ -78,35 +83,37 @@ function removeBall(ball) {
 */
 function update(dt) {
 
-  var i, lpos, rpos, segs;
+  var i, bridge;
 
   for(i=0; i<users.length; i++) {
 
-    lpos = users[i].leftHand.position;
-    rpos = users[i].rightHand.position;
-    segs = users[i].line.segments;
+    bridge = users[i].bridge;
 
-    segs[0].point.x = lpos.x;
-    segs[0].point.y = lpos.y;
-    segs[1].point.x = rpos.x;
-    segs[1].point.y = rpos.y;
+    bridge.constraintLeft.pointA.x  = users[i].leftHand.position.x;
+    bridge.constraintLeft.pointA.y  = users[i].leftHand.position.y;
+    bridge.constraintRight.pointA.x = users[i].rightHand.position.x;
+    bridge.constraintRight.pointA.y = users[i].rightHand.position.y;
+
+    var segs = users[i].line.segments;
+    var nodes = bridge.bridge.bodies;
+    segs[0].point = users[i].leftHand.position;
+    var j;
+    for(j=0; j<nodes.length; j++){
+      segs[j+1].point = nodes[j].position;
+    }
+    segs[j+1].point = users[i].rightHand.position;
+    users[i].line.smooth();
   }
 
   physics.update();
 
   if((timeSinceLastBall += dt) > 500) {
-    // addBall();
+    addBall();
     if(balls.length > 5) {
       removeBall(balls[0]);
     }
     timeSinceLastBall = 0;
   }
-
-  for (i = 0; i < chain.bodies.length; i++) {
-    var p = chain.bodies[i].position;
-    app.drawDebugCircle(p, 20, 'white');
-  }
-  // console.log(chain);
 }
 
 
@@ -116,17 +123,24 @@ function update(dt) {
 */
 function onUserIn(id, leftHand, rightHand) {
 
-  var lineThickness = 30;
-  var line = new paper.Path.Line({
+  
+  var lineThickness = chainNodesRadius;
+  var line = new paper.Path({
     strokeColor : HL.colors.light,
-    strokeWidth : lineThickness
+    strokeWidth : lineThickness*2,
+    strokeJoin : 'round'
   });
+  line.add([0,0]);
+  for (var i = 0; i < numNodesPerChain; i++) {
+    line.add([0,0]);
+  }
+  line.add([0,0]);
   var user = {
     bodyId    : id,
-    fixture   : physics.addHandLineRect(line, leftHand, rightHand, lineThickness),
     leftHand  : leftHand,
     rightHand : rightHand,
-    line : line
+    line : line,
+    bridge : createNewBridge(leftHand.position, rightHand.position)
   };
   users.push(user);
 }
@@ -142,7 +156,9 @@ function onUserOut(id) {
 
     if (users[i].bodyId == id) {
       users[i].line.remove();
-      physics.remove(users[i].fixture);
+      physics.remove(users[i].bridge.bridge);
+      physics.remove(users[i].bridge.constraintLeft);
+      physics.remove(users[i].bridge.constraintRight);
       users.splice(i, 1);
       break;
     }
