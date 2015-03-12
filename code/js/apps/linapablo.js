@@ -3,7 +3,8 @@ var app   = null,
 
 var physics = null,
     balls = [],
-    timeSinceLastBall = 0;
+    timeSinceLastBall = 0,
+    ballsGroup;
 
 /* 
   called once at initialisation
@@ -19,6 +20,7 @@ function setup() {
 
   setupPhysics();
 
+  ballsGroup = new paper.Group();
   var particules = 100;
 
   for (var i = 0; i < particules; i++) {
@@ -28,6 +30,8 @@ function setup() {
     }
     
   }
+
+  ocrLoop();
 }
 
 
@@ -41,7 +45,7 @@ function setupPhysics() {
 
 function addBall() {
 
-  var radius = 10;
+  var radius = 5;
   var pos = new paper.Point((Math.random()-0.5)*paper.view.bounds.width/2, (Math.random()-0.5)*paper.view.bounds.height/2);
   pos = pos.add(paper.view.center);
   var bview = new paper.Path.Circle({
@@ -49,6 +53,9 @@ function addBall() {
     fillColor : 'white',
     radius : radius+10
   });
+
+  ballsGroup.addChild(bview);
+
   balls.push({
     view    : bview,
     fixture : physics.addCircle(bview, radius, {restitution:0, friction:1, frictionAir:1 })
@@ -62,11 +69,28 @@ function removeBall(ball) {
   balls.splice(balls.indexOf(ball),1);
 }
 
+function ocrLoop(){
+  var ocrText = ocr();
+  document.getElementById('projectTitle').innerHTML = ocrText;
+  setTimeout(ocrLoop,5000);
+
+}
+
+function ocr(){
+  var raster = ballsGroup.rasterize(50);
+  
+  var imageData = raster.createImageData(raster.size);
+  var ocrText = OCRAD(imageData);
+
+  raster.visible = false;
+  return ocrText;
+}
 
 /* 
   called about 60 times per seconds
   dt : deltaTime since last frames (in milliseconds);
 */
+
 function update(dt) {
 
   var i, lpos, rpos, segs;
