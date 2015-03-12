@@ -76,20 +76,28 @@ function ocrLoop(){
 
 }
 
+var colors = ['red', 'green', 'blue', 'yellow', 'purple', 'gray', 'cyan'];
+var index = 0;
+
 function ocr(){
-  var raster = ballsGroup.rasterize(200);
+  var raster = ballsGroup.rasterize(75);
   
+  for (var i = 0; i < balls.length; i++)
+  {
+    var ball = balls[i];
+    ball.view.fillColor = colors[index];
+    index++;
+  }
+
   var imageData = raster.createImageData(raster.size);
   var ocrText = OCRAD(imageData);
 
   //raster.visible = false;
-
   for (var i = 0; i < balls.length; i++)
   {
     var ball = balls[i];
-
-    ball.view.fillColor = 'red';
-
+    ball.view.fillColor = 'white';
+    index++;
   }
 
   return ocrText;
