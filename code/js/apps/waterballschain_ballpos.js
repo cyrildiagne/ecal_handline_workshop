@@ -229,6 +229,12 @@ function checkWinner(){
    if (leftWin)
    {
     console.log("LEFT WON");
+    $('<h2>')
+    .html('bravo')
+    .css('position', 'absolute')
+    .css('top', '10px')
+    .css('left', '10px')
+    .appendTo('body');
    }
    else if(rightWin)
    {
