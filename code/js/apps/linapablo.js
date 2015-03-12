@@ -45,7 +45,7 @@ function setupPhysics() {
 
 function addBall() {
 
-  var radius = 5;
+  var radius = 20;
   var pos = new paper.Point((Math.random()-0.5)*paper.view.bounds.width/2, (Math.random()-0.5)*paper.view.bounds.height/2);
   pos = pos.add(paper.view.center);
   var bview = new paper.Path.Circle({
@@ -78,17 +78,20 @@ function ocrLoop(){
 
 var colors = ['red', 'green', 'blue', 'yellow', 'purple', 'gray', 'cyan'];
 var index = 0;
+var rasterToRemove;
 
 function ocr(){
-  var raster = ballsGroup.rasterize(75);
   
   for (var i = 0; i < balls.length; i++)
   {
     var ball = balls[i];
-    ball.view.fillColor = colors[index];
-    index = (index + 1) % colors.length;
+    ball.view.fillColor = 'black';
+    
+    console.log("parcours")
   }
-
+  index = (index + 1) % colors.length;
+  
+  var raster = ballsGroup.rasterize(10);
   var imageData = raster.createImageData(raster.size);
   var ocrText = OCRAD(imageData);
 
@@ -97,9 +100,12 @@ function ocr(){
   {
     var ball = balls[i];
     ball.view.fillColor = 'white';
-    index++;
   }
+  
 
+  if (rasterToRemove) rasterToRemove.remove();
+
+  rasterToRemove = raster;
   return ocrText;
 }
 
