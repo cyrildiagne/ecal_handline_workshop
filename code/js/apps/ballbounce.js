@@ -56,7 +56,7 @@ function setupObstacles() {
   for (var i = 0; i < 5; i++) {
     var from = new paper.Point(Math.random()*stageWidth, Math.random()*stageHeight);
     var to = new paper.Point(Math.random()*stageWidth, Math.random()*stageHeight);
-    var color = Math.random() < 0.7 ? 'blue' : 'red';
+    var color = Math.random() < 0.6 ? 'blue' : 'red';
     addObstacle(from, to, color);
   }
 }
