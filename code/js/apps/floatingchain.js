@@ -10,6 +10,18 @@ var chain, chainView,
     numNodesPerChain = 15,
     chainNodesRadius = 25;
 
+// var debugCanvas = $('<canvas>').appendTo($('body'))[0];
+// console.log(debugCanvas);
+// debugCanvas.style.position = 'absolute';
+// debugCanvas.style.top = '0';
+// debugCanvas.style.left = '0';
+// debugCanvas.width = 600;
+// debugCanvas.height = 300;
+// var debugCtx = debugCanvas.getContext('2d');
+// debugCtx.clearRect(0,0,600,300);
+// debugCtx.fillStyle="white";
+// debugCtx.fillRect(0,0,600,300);
+
 /* 
   called once at initialisation
 */
@@ -27,6 +39,23 @@ function setup() {
   group = new paper.Group();
   group.transformContent = false;
 
+  bg = new paper.Path.Rectangle({
+    fillColor : 'white',
+    width  : paper.view.bounds.width,
+    height : paper.view.bounds.height
+  });
+  group.addChild(bg);
+
+  // var pointText = new paper.PointText({
+  //   point: paper.view.center.add(new paper.Point(-170, 170)),
+  //   content: 'U',
+  //   fillColor: 'red',
+  //   // fontFamily: 'Courier New',
+  //   fontWeight: 'bold',
+  //   fontSize: 550
+  // });
+  // group.addChild(pointText);
+
   chain = addChain(new paper.Point(50,400), new paper.Point(500,400));
   chainView = new paper.Path({
     strokeWidth : chainNodesRadius,
@@ -36,7 +65,7 @@ function setup() {
   group.addChild(chainView);
 
   // init our chainview path
-  for(var k=0;k<chain.bodies.length;k++){
+  for(var k=0;k<chain.bridge.bodies.length;k++){
     chainView.add([0,0]);
   }
 
@@ -61,12 +90,16 @@ function addChain(leftPos, rightPos) {
   Matter.Composites.chain(bridge, 0.5, 0, -0.5, 0, { stiffness: 0.8 });
 
   var lastBody = bridge.bodies[bridge.bodies.length-1];
+  // var cLeft  = Matter.Constraint.create({ stiffness:1, pointA: leftPos,  bodyB: bridge.bodies[0], pointB: { x: 0, y: 0 } });
+  // var cRight = Matter.Constraint.create({ stiffness:1, pointA: lastBody.position, bodyB: lastBody, pointB: { x: 0, y: 0 } });
   
   Matter.World.add(physics.engine.world, [
       bridge,
+      // cLeft,
+      // cRight
   ]);
 
-  return bridge;
+  return {bridge:bridge};
 }
 
 
@@ -80,6 +113,8 @@ function addBall() {
     fillColor : 'white',
     radius : radius+10
   });
+
+  // group.addChild(bview);
 
   balls.push({
     view    : bview,
@@ -98,8 +133,8 @@ function ocrLoop(){
   var ocrText = ocr();
   document.getElementById('projectTitle').innerHTML = ocrText;
   setTimeout(ocrLoop, 1500);
-}
 
+}
 
 var rasterToRemove;
 
@@ -109,6 +144,7 @@ function ocr(){
     return;
   }
 
+  bg.visible = true;
   chainView.strokeColor = 'black';
 
   var raster = group.rasterize(20);
@@ -116,6 +152,10 @@ function ocr(){
   var imageData = raster.getImageData(raster.size);
   var ocrText = OCRAD(imageData);
   
+  // debugCtx.putImageData(imageData, 0, 0);
+
+  bg.visible = false;
+  raster.visible = false;
   chainView.strokeColor = 'white';
 
   raster.scaling = 1;
@@ -146,7 +186,7 @@ function update(dt) {
     segs[1].point.y = rpos.y;
   }
 
-  var chainBodies = chain.bodies;
+  var chainBodies = chain.bridge.bodies;
   for (i = 0; i < chainBodies.length; i++) {
     chainView.segments[i].point.x = chainBodies[i].position.x;
     chainView.segments[i].point.y = chainBodies[i].position.y;
