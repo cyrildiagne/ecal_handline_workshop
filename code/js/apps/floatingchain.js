@@ -10,17 +10,14 @@ var chain, chainView,
     numNodesPerChain = 20,
     chainNodesRadius = 20;
 
-// var debugCanvas = $('<canvas>').appendTo($('body'))[0];
-// console.log(debugCanvas);
-// debugCanvas.style.position = 'absolute';
-// debugCanvas.style.top = '0';
-// debugCanvas.style.left = '0';
-// debugCanvas.width = 600;
-// debugCanvas.height = 300;
-// var debugCtx = debugCanvas.getContext('2d');
-// debugCtx.clearRect(0,0,600,300);
-// debugCtx.fillStyle="white";
-// debugCtx.fillRect(0,0,600,300);
+var words = ['COOL', 'LOVE', 'TEST'],
+    currWord = 0,
+    currLetter = 0,
+    guideLetter = null,
+    letterRasters = [];
+
+var isActive = true;
+
 
 /* 
   called once at initialisation
@@ -46,16 +43,6 @@ function setup() {
   });
   group.addChild(bg);
 
-  // var pointText = new paper.PointText({
-  //   point: paper.view.center.add(new paper.Point(-170, 170)),
-  //   content: 'U',
-  //   fillColor: 'red',
-  //   // fontFamily: 'Courier New',
-  //   fontWeight: 'bold',
-  //   fontSize: 550
-  // });
-  // group.addChild(pointText);
-
   chain = addChain(new paper.Point(50,400), new paper.Point(700,400));
   chainView = new paper.Path({
     strokeWidth : chainNodesRadius*1.5,
@@ -69,8 +56,15 @@ function setup() {
     chainView.add([0,0]);
   }
 
+  $(window).click(function(){
+    validateLetter();
+  });
+
+  setCurrLetter();
+
   ocrLoop();
 }
+
 
 function setupPhysics() {
 
@@ -85,7 +79,7 @@ function addChain(leftPos, rightPos) {
   var gpId = Matter.Body.nextGroupId();
   var bridge = Matter.Composites.stack(leftPos.x, leftPos.y, numNodesPerChain, 1, 0, 0, function(x, y, column, row) {
       var b = Matter.Bodies.circle(x, y, chainNodesRadius, { groupId: gpId, friction:0, restitution:1, frictionAir:1 });
-      b.initPos = {x:x, y:y};
+      b.initPos = new paper.Point(x, y);
       return b;
   });
   
@@ -101,47 +95,151 @@ function addChain(leftPos, rightPos) {
 }
 
 
-function removeBall(ball) {
-
-  ball.view.remove();
-  physics.remove(ball.fixture);
-  balls.splice(balls.indexOf(ball),1);
+function setCurrLetter(){
+  if(guideLetter) {
+    guideLetter.remove();
+  }
+  guideLetter = new paper.PointText({
+    content: words[currWord][currLetter],
+    fillColor: 'white',
+    fontFamily: 'tstar_twregular',
+    fontWeight: 'bold',
+    fontSize: 500
+  });
+  guideLetter.fillColor.alpha = 0.1;
+  guideLetter.transformContent = false;
+  guideLetter.pivot = new paper.Point(guideLetter.bounds.width*0.5, -guideLetter.bounds.height*0.3);
+  guideLetter.position = paper.view.center;
+  guideLetter.sendToBack();
 }
 
-function ocrLoop(){
-  var ocrText = ocr();
-  document.getElementById('projectTitle').innerHTML = ocrText;
-  setTimeout(ocrLoop, 1500);
-
-}
 
 var rasterToRemove;
 
-function ocr(){
+function ocrLoop(){
   
-  if(group.bounds.height === 0 || group.bounds.width === 0) {
-    return;
-  }
+  // if(group.bounds.height === 0 || group.bounds.width === 0) {
+  //   return;
+  // }
 
   bg.visible = true;
   chainView.strokeColor = 'black';
+  for (var i = 0; i < users.length; i++) {
+    users[i].line.strokeColor = 'black';
+  }
 
   var raster = group.rasterize(20);
-  
   var imageData = raster.getImageData(raster.size);
-  var ocrText = OCRAD(imageData);
-  
-  // debugCtx.putImageData(imageData, 0, 0);
+  var ocrText;
+  if(isActive){ ocrText = OCRAD(imageData);}
+  if(ocrText) console.log(ocrText);
+  document.getElementById('projectTitle').innerHTML = ocrText;
+
+  raster.visible = false;
 
   bg.visible = false;
-  raster.visible = false;
   chainView.strokeColor = 'white';
+  for (var j = 0; j < users.length; j++) {
+    users[j].line.strokeColor = 'white';
+  }
+
+  if (ocrText && ocrText.indexOf(words[currWord][currLetter]) > -1 ) {
+    validateLetter();
+  }
 
   raster.scaling = 1;
   if (rasterToRemove) rasterToRemove.remove();
 
   rasterToRemove = raster;
-  return ocrText;
+
+  setTimeout(ocrLoop, 1500);
+}
+
+
+function hide() {
+  chainView.visible = false;
+  guideLetter.visible = false;
+  for (var i = 0; i < users.length; i++) { users[i].line.visible = false; }
+  isActive = false;
+}
+
+function show() {
+  chainView.visible = true;
+  guideLetter.visible = true;
+  for (var i = 0; i < users.length; i++) { users[i].line.visible = true; }
+  isActive = true;
+}
+
+function validateLetter() {
+
+  createLetterThumb();
+
+  currLetter++;
+  if(currLetter >= words[currWord].length) {
+    
+    hide();
+
+    setTimeout(function(){
+      for (var i = 0; i < letterRasters.length; i++) {
+        var raster = letterRasters[i];
+        TweenMax.to(raster.position, 1, {
+          y:paper.view.center.y,
+          delay:i*0.1,
+          ease:Sine.easeInOut,
+          onComplete:function(e){
+            TweenMax.to(this.target._owner.position, 1, {
+              y: paper.view.bounds.height+100,
+              delay: 1 + i*0.1,
+              ease: Sine.easeInOut
+            });
+          }
+        });
+      }
+      letterRasters.splice(0, letterRasters.length);
+    }, 2000);
+
+    setTimeout(function(){
+      show();
+      wordComplete();
+    }, 6000);
+  } else {
+    setCurrLetter();
+  }
+}
+
+function wordComplete() {
+
+  do {
+    newWord = Math.floor(Math.random()*words.length);
+  } while (newWord == currWord);
+  currWord = newWord;
+  currLetter = 0;
+  setCurrLetter();
+}
+
+function createLetterThumb() {
+
+  var raster = group.rasterize();
+  var imageData = raster.getImageData(raster.size);
+
+  letterRasters.push(raster);
+  raster.transformContent = false;
+
+  var letterScale = 0.2;
+  var dx = raster.bounds.width * 0.5 * letterScale;
+  var dy = raster.bounds.height * 0.5 * letterScale;
+  var margin = 20;
+
+  dx += (raster.bounds.width * letterScale + margin) * currLetter;
+
+  TweenMax.to(raster.position, 1, {
+    x:dx+margin,
+    y:dy+margin,
+    ease:Sine.easeInOut,
+    onUpdate:function(){
+      raster.scaling = 1 - this.ratio*(1-letterScale);
+    }
+  });
 }
 
 /* 
@@ -168,14 +266,11 @@ function update(dt) {
   var chainBodies = chain.bridge.bodies;
   var f;
   for (i = 0; i < chainBodies.length; i++) {
-    // console.log(chainBodies[i].initPos);
-    f = {
-      x : (chainBodies[i].initPos.x - chainBodies[i].position.x) * 0.000003,
-      y : (chainBodies[i].initPos.y - chainBodies[i].position.y) * 0.000003
-    };
-    // chainBodies[i].velocity.x = (chainBodies[i].initPos.x - chainBodies[i].position.x) * 0.05;
-    // chainBodies[i].velocity.y = (chainBodies[i].initPos.y - chainBodies[i].position.y) * 0.05;
-    Matter.Body.applyForce( chainBodies[i], chainBodies[i].position, f);
+    
+    f = chainBodies[i].initPos.subtract(chainBodies[i].position);
+    f = f.normalize().multiply(0.001);
+    
+    Matter.Body.applyForce(chainBodies[i], chainBodies[i].position, f);
     chainView.segments[i].point.x = chainBodies[i].position.x;
     chainView.segments[i].point.y = chainBodies[i].position.y;
   }
@@ -191,14 +286,16 @@ function update(dt) {
 */
 function onUserIn(id, leftHand, rightHand) {
 
-  var lineThickness = 20;
+  var lineThickness = 30;
   var line = new paper.Path.Line({
-    strokeColor : 'blue',
+    strokeColor : 'white',
     strokeWidth : lineThickness
   });
+  line.visible = isActive;
+  group.addChild(line);
   var user = {
     bodyId    : id,
-    fixture   : physics.addHandLineRect(line, leftHand, rightHand, lineThickness*1.2),
+    fixture   : physics.addHandLineRect(line, leftHand, rightHand, lineThickness),
     leftHand  : leftHand,
     rightHand : rightHand,
     line : line
