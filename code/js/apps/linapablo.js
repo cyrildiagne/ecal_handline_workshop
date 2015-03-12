@@ -21,6 +21,12 @@ function setup() {
   setupPhysics();
 
   ballsGroup = new paper.Group();
+  var background = new paper.Rectangle({
+    point: [0, 0],
+    size: [paper.view.bounds.width, paper.view.bounds.height]
+  });
+  ballsGroup.addChild(background);
+
   var particules = 100;
 
   for (var i = 0; i < particules; i++) {
@@ -45,7 +51,7 @@ function setupPhysics() {
 
 function addBall() {
 
-  var radius = 5;
+  var radius = 20;
   var pos = new paper.Point((Math.random()-0.5)*paper.view.bounds.width/2, (Math.random()-0.5)*paper.view.bounds.height/2);
   pos = pos.add(paper.view.center);
   var bview = new paper.Path.Circle({
@@ -72,17 +78,41 @@ function removeBall(ball) {
 function ocrLoop(){
   var ocrText = ocr();
   document.getElementById('projectTitle').innerHTML = ocrText;
-  setTimeout(ocrLoop,5000);
+  setTimeout(ocrLoop,1500);
 
 }
 
+var colors = ['red', 'green', 'blue', 'yellow', 'purple', 'gray', 'cyan'];
+var index = 0;
+var rasterToRemove;
+
 function ocr(){
-  var raster = ballsGroup.rasterize(50);
   
+  for (var i = 0; i < balls.length; i++)
+  {
+    var ball = balls[i];
+    ball.view.fillColor = 'black';
+    
+    console.log("parcours")
+  }
+  index = (index + 1) % colors.length;
+  
+  var raster = ballsGroup.rasterize(10);
   var imageData = raster.createImageData(raster.size);
+  
   var ocrText = OCRAD(imageData);
 
-  raster.visible = false;
+  //raster.visible = false;
+  for (var i = 0; i < balls.length; i++)
+  {
+    var ball = balls[i];
+    ball.view.fillColor = 'white';
+  }
+  
+
+  if (rasterToRemove) rasterToRemove.remove();
+
+  rasterToRemove = raster;
   return ocrText;
 }
 
