@@ -36,7 +36,7 @@ function update(dt) {
     var g = users[i].ghost;
 
     // if our ghost has less than 400 frames
-    if(g.history.length < 400) {
+    if(g.history.length < 120) {
 
       // add a new frame
       g.history.push({
@@ -49,24 +49,55 @@ function update(dt) {
   // PLAYBACK RECORD
 
   for (var j=0; j<ghosts.length; j++) {
+
     var gh = ghosts[j];
     gh.currFrame++;
+
     if (gh.currFrame >= gh.history.length) {
+      // replay complete
       gh.currFrame = 0;
+      var firstFrame = gh.history[0];
+      var lastFrame  = gh.history[gh.history.length-1];
+      gh.offsetLeft  = gh.offsetLeft.add( lastFrame.left.subtract(firstFrame.left) );
+      gh.offsetRight = gh.offsetRight.add( lastFrame.left.subtract(firstFrame.left) );
     }
+
+    var left = gh.history[gh.currFrame].left.add(gh.offsetLeft);
+    var right = gh.history[gh.currFrame].right.add(gh.offsetRight);
+    var handsMid = left.add(right).multiply(0.5);
+    var handsVec = left.subtract(right);
+
+    loopWallsX(handsMid, gh.offsetLeft);
+    loopWallsY(handsMid, gh.offsetRight);
+
     if(gh.type == 'line') {
-      gh.shape.segments[0].point = gh.history[gh.currFrame].left;
-      gh.shape.segments[1].point = gh.history[gh.currFrame].right;
+      var p0 = handsMid.subtract(handsVec.multiply(0.5));
+      var p1 = handsMid.add(handsVec.multiply(0.5));
+      gh.shape.segments[0].point = p0;
+      gh.shape.segments[1].point = p1;
     } else {
-      var left = gh.history[gh.currFrame].left;
-      var right = gh.history[gh.currFrame].right;
-      var handsMid = left.add(right).multiply(0.5);
-      var handsVec = left.subtract(right);
       gh.shape.scaling = handsVec.length / 100 * 0.5;
       gh.shape.position = handsMid;
       gh.shape.rotation = handsVec.getAngle();
     }
   }
+}
+
+// p : position
+function loopWallsX(p) {
+  var offset = 100;
+  while(p.x < -offset) {
+    p.x += (paper.view.bounds.width+offset);
+  }
+  p.x = p.x % (paper.view.bounds.width+offset);
+}
+
+function loopWallsY(p) {
+  var offset = 100;
+  while(p.y < offset) {
+    p.y += (paper.view.bounds.height+offset);
+  }
+  p.y = p.y % (paper.view.bounds.height+offset);
 }
 
 
@@ -109,7 +140,9 @@ function onUserIn(id, leftHand, rightHand) {
     shape : shape,
     type : type,
     history : [],
-    currFrame : -1
+    currFrame : -1,
+    offsetLeft  : new paper.Point(),
+    offsetRight : new paper.Point()
   };
   // and add it to our ghost table
   ghosts.push(ghost);
