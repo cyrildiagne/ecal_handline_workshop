@@ -21,6 +21,12 @@ function setup() {
   setupPhysics();
 
   ballsGroup = new paper.Group();
+  var background = new paper.Rectangle({
+    point: [0, 0],
+    size: [paper.view.bounds.width, paper.view.bounds.height]
+  });
+  ballsGroup.addChild(background);
+
   var particules = 100;
 
   for (var i = 0; i < particules; i++) {
@@ -93,6 +99,7 @@ function ocr(){
   
   var raster = ballsGroup.rasterize(10);
   var imageData = raster.createImageData(raster.size);
+  
   var ocrText = OCRAD(imageData);
 
   //raster.visible = false;
