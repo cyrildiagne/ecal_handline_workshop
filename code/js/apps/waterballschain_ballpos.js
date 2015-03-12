@@ -9,6 +9,10 @@ var physics = null,
     numNodesPerChain = 6,
     chainNodesRadius = 20;
 
+var sideBall = true;
+var radius = 30;
+
+
 /* 
   called once at initialisation
 */
@@ -16,12 +20,15 @@ function setup() {
 
   app = new HL.App();
   app.setup({
-    projectName : 'Chains',
-    author1 : 'Prenom Nom',
-    author2 : 'Prenom Nom'
+    projectName : 'Balls',
+    author1 : 'Mylène Dreyer',
+    author2 : 'Bérénice de Casteja'
   });
+  app.usersOffset.y = 200;
 
   setupPhysics();
+  addWall(paper.view.bounds.height*0.75);
+  addWall(-paper.view.bounds.height*0.25);
 }
 
 
@@ -29,7 +36,26 @@ function setupPhysics() {
 
   physics = new HL.Physics();
   physics.addFloor();
+  physics.addLeftWall();
+  physics.addRightWall();
+  physics.addUpWall();
+  
+
 }
+
+
+
+// HL.Physics.prototype.addCircle = function(view, radius, opt) {
+//   opt = opt || { restitution: 0.7, friction : 0.0 };
+//   var circle = Matter.Bodies.circle(view.position.x, view.position.y, radius, opt, 10);
+//   circle.view = view;
+//   Matter.World.add(this.engine.world, circle);
+//   this.bodies.push({
+//     body: circle,
+//     view: view
+//   });
+//   return circle;
+// };
 
 function createNewBridge(leftPos, rightPos) {
 
@@ -54,20 +80,61 @@ function createNewBridge(leftPos, rightPos) {
 }
 
 
+
+function addWall(poswall) {
+
+  var wRect = 100;
+  //var hRect = 30;
+
+  var hRect = paper.view.bounds.height/1.5;
+  var pos = new paper.Point(paper.view.bounds.width/2, poswall);
+  var rview = new paper.Path.Rectangle({
+    position : pos,
+    fillColor : 'white',
+    width : wRect,
+    height : hRect
+  });
+  physics.addRectangle(rview, wRect+radius, hRect, {restitution:0.9, friction:0, isStatic: true})
+
+
+}
+
 function addBall() {
 
-  var radius = 40;
-  var pos = new paper.Point(Math.random()*paper.view.bounds.width, 0);
+  
+  var posx;
+
+  if (sideBall == true){
+    posx = paper.view.bounds.width * 0.25;
+    sideBall = false;
+    //console.log("gauche");
+
+  }else if (sideBall == false){
+    posx = paper.view.bounds.width * 0.75;
+    sideBall = true;
+
+    //console.log("droite");
+
+  }
+
+  var pos = new paper.Point(posx, paper.view.bounds.height-(radius/2)-50);
+  //var pos = new paper.Point(paper.view.bounds.width/2, paper.view.bounds.height/2);
+
   var bview = new paper.Path.Circle({
     position : pos,
-    fillColor : 'royalblue',
-    radius : radius
+    //fillColor : 'royalblue',
+    //fillColor : '#3FA2DB',
+    fillColor : '#'+Math.floor(Math.random()*16777215).toString(16),
+    radius : radius + 15
   });
-  balls.push({
+  bview.fillColor.alpha = Math.random() + 0.2;
+    balls.push({
     view    : bview,
     fixture : physics.addCircle(bview, radius, {restitution:0.9, friction:0, density:0.001})
   });
+
 }
+
 
 function removeBall(ball) {
 
@@ -77,13 +144,37 @@ function removeBall(ball) {
 }
 
 
+
+function addSquare() {
+
+  var wSquare = 100;
+  var hSquare = 100
+  var pos = new paper.Point(Math.random()*paper.view.bounds.width, paper.view.bounds.height-50);
+  //var pos = new paper.Point(paper.view.bounds.width/2, paper.view.bounds.height/2);
+
+  var sview = new paper.Path.Rectangle({
+    position : pos,
+    fillColor : 'royalblue',
+    //fillColor : '#'+Math.floor(Math.random()*16777215).toString(16),
+    width : wSquare,
+    height: hSquare
+  });
+  sview.fillColor.alpha = Math.random();
+  balls.push({
+    view    : sview,
+    fixture : physics.addRectangle(sview, wSquare, hSquare, {restitution:0.9, friction:0})
+  });
+
+}
+
+
 /* 
   called about 60 times per seconds
   dt : deltaTime since last frames (in milliseconds);
 */
 function update(dt) {
 
-  var i, bridge;
+var i, bridge;
 
   for(i=0; i<users.length; i++) {
 
@@ -105,16 +196,52 @@ function update(dt) {
     users[i].line.smooth();
   }
 
-  physics.update();
 
-  if((timeSinceLastBall += dt) > 500) {
+
+ 
+  physics.update();
+  var ballscount = 3;
+  if((timeSinceLastBall += dt) > 1000 && balls.length < ballscount) {
     addBall();
-    if(balls.length > 5) {
-      removeBall(balls[0]);
-    }
+    
     timeSinceLastBall = 0;
+
+  }
+  else if(ballscount == balls.length){
+    checkWinner();  
   }
 }
+
+function checkWinner(){
+    var leftWin = true;
+    var rightWin = true;
+    for (var i = 0; i < balls.length; i++) {
+    var ball = balls[i];
+    var ballX = ball.fixture.position.x;
+
+     var thisBallIsLeft = ballX > paper.view.bounds.width/2;
+     leftWin = leftWin && thisBallIsLeft;
+
+     var thisBallIsRight = ballX < paper.view.bounds.width/2;
+     rightWin = rightWin && thisBallIsRight;
+   };
+
+   if (leftWin)
+   {
+    console.log("LEFT WON");
+    $('<h2>')
+    .html('bravo')
+    .css('position', 'absolute')
+    .css('top', '10px')
+    .css('left', '10px')
+    .appendTo('body');
+   }
+   else if(rightWin)
+   {
+    console.log("RIGHT WON");
+   }
+
+};
 
 
 /* 
