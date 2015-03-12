@@ -7,8 +7,8 @@ var physics = null,
     bg, group;
 
 var chain, chainView,
-    numNodesPerChain = 15,
-    chainNodesRadius = 25;
+    numNodesPerChain = 20,
+    chainNodesRadius = 20;
 
 // var debugCanvas = $('<canvas>').appendTo($('body'))[0];
 // console.log(debugCanvas);
@@ -56,9 +56,9 @@ function setup() {
   // });
   // group.addChild(pointText);
 
-  chain = addChain(new paper.Point(50,400), new paper.Point(500,400));
+  chain = addChain(new paper.Point(50,400), new paper.Point(700,400));
   chainView = new paper.Path({
-    strokeWidth : chainNodesRadius,
+    strokeWidth : chainNodesRadius*1.5,
     strokeColor : 'white',
     strokeJoin : 'round'
   });
@@ -84,43 +84,22 @@ function addChain(leftPos, rightPos) {
 
   var gpId = Matter.Body.nextGroupId();
   var bridge = Matter.Composites.stack(leftPos.x, leftPos.y, numNodesPerChain, 1, 0, 0, function(x, y, column, row) {
-      return Matter.Bodies.circle(x, y, chainNodesRadius, { groupId: gpId, friction:0, restitution:1, frictionAir:1 });
+      var b = Matter.Bodies.circle(x, y, chainNodesRadius, { groupId: gpId, friction:0, restitution:1, frictionAir:1 });
+      b.initPos = {x:x, y:y};
+      return b;
   });
   
   Matter.Composites.chain(bridge, 0.5, 0, -0.5, 0, { stiffness: 0.8 });
 
   var lastBody = bridge.bodies[bridge.bodies.length-1];
-  // var cLeft  = Matter.Constraint.create({ stiffness:1, pointA: leftPos,  bodyB: bridge.bodies[0], pointB: { x: 0, y: 0 } });
-  // var cRight = Matter.Constraint.create({ stiffness:1, pointA: lastBody.position, bodyB: lastBody, pointB: { x: 0, y: 0 } });
   
   Matter.World.add(physics.engine.world, [
-      bridge,
-      // cLeft,
-      // cRight
+      bridge
   ]);
 
   return {bridge:bridge};
 }
 
-
-function addBall() {
-
-  var radius = 20;
-  var pos = new paper.Point((Math.random()-0.5)*paper.view.bounds.width/2, (Math.random()-0.5)*paper.view.bounds.height/2);
-  pos = pos.add(paper.view.center);
-  var bview = new paper.Path.Circle({
-    position : pos,
-    fillColor : 'white',
-    radius : radius+10
-  });
-
-  // group.addChild(bview);
-
-  balls.push({
-    view    : bview,
-    fixture : physics.addCircle(bview, radius, {restitution:0, friction:0, frictionAir:1 })
-  });
-}
 
 function removeBall(ball) {
 
@@ -187,7 +166,16 @@ function update(dt) {
   }
 
   var chainBodies = chain.bridge.bodies;
+  var f;
   for (i = 0; i < chainBodies.length; i++) {
+    // console.log(chainBodies[i].initPos);
+    f = {
+      x : (chainBodies[i].initPos.x - chainBodies[i].position.x) * 0.000003,
+      y : (chainBodies[i].initPos.y - chainBodies[i].position.y) * 0.000003
+    };
+    // chainBodies[i].velocity.x = (chainBodies[i].initPos.x - chainBodies[i].position.x) * 0.05;
+    // chainBodies[i].velocity.y = (chainBodies[i].initPos.y - chainBodies[i].position.y) * 0.05;
+    Matter.Body.applyForce( chainBodies[i], chainBodies[i].position, f);
     chainView.segments[i].point.x = chainBodies[i].position.x;
     chainView.segments[i].point.y = chainBodies[i].position.y;
   }
@@ -210,7 +198,7 @@ function onUserIn(id, leftHand, rightHand) {
   });
   var user = {
     bodyId    : id,
-    fixture   : physics.addHandLineRect(line, leftHand, rightHand, lineThickness*2),
+    fixture   : physics.addHandLineRect(line, leftHand, rightHand, lineThickness*1.2),
     leftHand  : leftHand,
     rightHand : rightHand,
     line : line
