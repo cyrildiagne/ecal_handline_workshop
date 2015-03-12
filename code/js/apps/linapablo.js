@@ -86,7 +86,7 @@ function ocr(){
   {
     var ball = balls[i];
     ball.view.fillColor = colors[index];
-    index++;
+    index = (index + 1) % colors.length;
   }
 
   var imageData = raster.createImageData(raster.size);
