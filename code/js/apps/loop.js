@@ -5,7 +5,7 @@ var app   = null,
 var filish = ['assets/loop/1.svg','assets/loop/2.svg','assets/loop/3.svg','assets/loop/4.svg',
               'assets/loop/8.svg','assets/loop/9.svg','assets/loop/10.svg',
               'assets/loop/11.svg','assets/loop/12.svg','assets/loop/13.svg','assets/loop/14.svg','assets/loop/15.svg',
-              'assets/loop/16.svg','assets/loop/17.svg','assets/loop/18.svg','assets/loop/19.svg','assets/loop/20.svg',
+              'assets/loop/16.svg','assets/loop/17.svg','assets/loop/19.svg','assets/loop/20.svg',
               'assets/loop/21.svg','assets/loop/22.svg'];
 
 /* 
