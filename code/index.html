@@ -91,19 +91,14 @@
         }
       }
 
-      var scene = getParam('app') || 'default';
-      include("js/apps/"+scene+".js", function() {
-        setup();
-      });
-
 
 
       // PRESENTATION
 
-      var apps = ['floatingchain', 'swimmingboules', 'laralilou', 'twoHandPath3', 'ballbounce4', 'loop']
+      var apps = ['ballbouncefinal', 'laralilou', 'twoHandPath7', 'linapablo', 'loop', 'swimmingboules']
 
       function loadPrev() {
-        curr = getParam('app') || 'default';
+        curr = getParam('app') || apps[0];
         currPos = apps.indexOf(curr);
         currPos = Math.min(Math.max(0, currPos), apps.length-1);
         if(--currPos < 0) {
@@ -113,7 +108,7 @@
       }
 
       function loadNext() {
-        curr = getParam('app') || 'default';
+        curr = getParam('app') || apps[0];
         currPos = apps.indexOf(curr);
         currPos = Math.min(Math.max(0, currPos), apps.length-1);
         if(++currPos > apps.length-1) {
@@ -139,6 +134,12 @@
             loadPrev();
             break;
         }
+      });
+
+
+      var scene = getParam('app') || apps[0];
+      include("js/apps/"+scene+".js", function() {
+        setup();
       });
       
     </script>
