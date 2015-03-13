@@ -10,11 +10,15 @@ var chain, chainView,
     numNodesPerChain = 20,
     chainNodesRadius = 15;
 
-var words = ['AKPA', 'LOVE', 'TEST'],
+var words = ['KISS', 'IT'],
     currWord = 0,
     currLetter = 0,
     guideLetter = null,
+    fin = true,
     letterRasters = [];
+
+
+var sound;
 
 var isActive = true;
 
@@ -26,11 +30,17 @@ function setup() {
 
   app = new HL.App();
   app.setup({
-    projectName : 'WORK OUT',
+    projectName : 'WORKOUT',
     author1 : 'Lina Berjaner',
     author2 : 'Pablo Perez'
   });
   app.usersOffset.y = 200;
+
+  sound = new Howl({
+    urls: ['assets/kissit/kissit.mp3']
+  });
+
+
 
   setupPhysics();
 
@@ -133,8 +143,8 @@ function ocrLoop(){
   var imageData = raster.getImageData(raster.size);
   var ocrText;
   if(isActive){ ocrText = OCRAD(imageData);}
-  if(ocrText) console.log(ocrText);
-  document.getElementById('projectTitle').innerHTML = 'WORK OUT ' + ocrText;
+  //if(ocrText) console.log(ocrText);
+  document.getElementById('projectTitle').innerHTML = ocrText;
 
   raster.visible = false;
 
@@ -183,12 +193,12 @@ function validateLetter() {
     setTimeout(function(){
       for (var i = 0; i < letterRasters.length; i++) {
         var raster = letterRasters[i];
-        TweenMax.to(raster.position, 1, {
+        TweenMax.to(raster.position, 0.7, {
           y:paper.view.center.y,
           delay:i*0.1,
           ease:Sine.easeInOut,
           onComplete:function(e){
-            TweenMax.to(this.target._owner.position, 1, {
+            TweenMax.to(this.target._owner.position, 0.7, {
               y: paper.view.bounds.height+100,
               delay: 1 + i*0.1,
               ease: Sine.easeInOut
@@ -197,12 +207,14 @@ function validateLetter() {
         });
       }
       letterRasters.splice(0, letterRasters.length);
+       fin = !fin;
+      if(fin == true){sound.play()}
     }, 2000);
 
     setTimeout(function(){
       show();
       wordComplete();
-    }, 6000);
+  }, 6000);
   } else {
     setCurrLetter();
   }
@@ -247,6 +259,8 @@ function createLetterThumb() {
   called about 60 times per seconds
   dt : deltaTime since last frames (in milliseconds);
 */
+
+
 
 function update(dt) {
 
