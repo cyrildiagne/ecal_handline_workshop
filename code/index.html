@@ -95,6 +95,51 @@
       include("js/apps/"+scene+".js", function() {
         setup();
       });
+
+
+
+      // PRESENTATION
+
+      var apps = ['floatingchain', 'swimmingboules', 'laralilou', 'twoHandPath3', 'ballbounce4', 'loop']
+
+      function loadPrev() {
+        curr = getParam('app') || 'default';
+        currPos = apps.indexOf(curr);
+        currPos = Math.min(Math.max(0, currPos), apps.length-1);
+        if(--currPos < 0) {
+          currPos = apps.length-1;
+        }
+        setAppURL(apps[currPos]);
+      }
+
+      function loadNext() {
+        curr = getParam('app') || 'default';
+        currPos = apps.indexOf(curr);
+        currPos = Math.min(Math.max(0, currPos), apps.length-1);
+        if(++currPos > apps.length-1) {
+          currPos = 0;
+        }
+        setAppURL(apps[currPos]);
+      }
+
+      function setAppURL(appName) {
+        var url = window.location.host + '?app=' +appName;
+        var socket = getParam('socket');
+        if(socket) { url += '&socket='+socket; }
+        console.log(url);
+        window.location.href = 'http://' + url;
+      }
+
+      window.addEventListener('keydown', function(e){
+        switch(e.keyCode) {
+          case 39: // right arrow
+            loadNext();
+            break;
+          case 37: // left arrow
+            loadPrev();
+            break;
+        }
+      });
       
     </script>
   </body>
