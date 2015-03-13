@@ -67,9 +67,9 @@ function setup() {
     chainView.add([0,0]);
   }
 
-  $(window).click(function(){
-    validateLetter();
-  });
+  // $(window).click(function(){
+  //   validateLetter();
+  // });
 
   setCurrLetter();
 
