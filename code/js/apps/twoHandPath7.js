@@ -13,7 +13,7 @@ function setup() {
 
   app = new HL.App();
   app.setup({
-    projectName : 'Default',
+    projectName : 'Forty-nine Shades of Grey',
     author1 : 'Edina ',
     author2 : 'Jean Pablo & Karen'
   });
@@ -44,7 +44,7 @@ function update(dt)
 		if (user.handLeft.state === "open" ||
 			user.handRight.state === "open" )
 		{
-			console.log("One of or both user hands are open");
+			//console.log("One of or both user hands are open");
 
 			var pUser = pUsers[i]; // stade precedent user
 
@@ -85,7 +85,7 @@ function update(dt)
 					user.activePath.strokeColor = new paper.Color(1, distance);
 					user.activePath.strokeWidth = 0.1;
 
-					console.log(distance);		
+					//console.log(distance);		
 
 					user.line.strokeColor = new paper.Color(distance, 1);
 					user.line.strokeWidth = 10;	
