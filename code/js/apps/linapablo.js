@@ -13,7 +13,7 @@ function setup() {
 
   app = new HL.App();
   app.setup({
-    projectName : 'LOVE',
+    projectName : 'WORK OUT',
     author1 : 'Lina Berjaner',
     author2 : 'Pablo Perez'
   });
