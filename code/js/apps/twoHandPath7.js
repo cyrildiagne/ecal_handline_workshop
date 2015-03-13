@@ -13,7 +13,7 @@ function setup() {
 
   app = new HL.App();
   app.setup({
-    projectName : 'Fourty-nine shades of grey',
+    projectName : 'Forty-nine Shades of Grey',
     author1 : 'Edina ',
     author2 : 'Jean Pablo & Karen'
   });
