@@ -8,9 +8,9 @@ var physics = null,
 
 var chain, chainView,
     numNodesPerChain = 20,
-    chainNodesRadius = 20;
+    chainNodesRadius = 15;
 
-var words = ['COOL', 'LOVE', 'TEST'],
+var words = ['AKPA', 'LOVE', 'TEST'],
     currWord = 0,
     currLetter = 0,
     guideLetter = null,
@@ -43,9 +43,9 @@ function setup() {
   });
   group.addChild(bg);
 
-  chain = addChain(new paper.Point(50,400), new paper.Point(700,400));
+  chain = addChain(new paper.Point(50,400), new paper.Point(900,400));
   chainView = new paper.Path({
-    strokeWidth : chainNodesRadius*1.5,
+    strokeWidth : chainNodesRadius*2,
     strokeColor : 'white',
     strokeJoin : 'round'
   });
@@ -77,7 +77,7 @@ function setupPhysics() {
 function addChain(leftPos, rightPos) {
 
   var gpId = Matter.Body.nextGroupId();
-  var bridge = Matter.Composites.stack(leftPos.x, leftPos.y, numNodesPerChain, 1, 0, 0, function(x, y, column, row) {
+  var bridge = Matter.Composites.stack(leftPos.x, leftPos.y, numNodesPerChain, 1, 15, 0, function(x, y, column, row) {
       var b = Matter.Bodies.circle(x, y, chainNodesRadius, { groupId: gpId, friction:0, restitution:1, frictionAir:1 });
       b.initPos = new paper.Point(x, y);
       return b;
@@ -143,7 +143,7 @@ function ocrLoop(){
     users[j].line.strokeColor = 'white';
   }
 
-  if (ocrText && ocrText.indexOf(words[currWord][currLetter]) > -1 ) {
+  if (ocrText && (ocrText.indexOf(words[currWord][currLetter]) > -1 || ocrText.indexOf(words[currWord][currLetter].toLowerCase()) > -1)) {
     validateLetter();
   }
 
@@ -152,7 +152,7 @@ function ocrLoop(){
 
   rasterToRemove = raster;
 
-  setTimeout(ocrLoop, 1500);
+  setTimeout(ocrLoop, 500);
 }
 
 
@@ -268,7 +268,7 @@ function update(dt) {
   for (i = 0; i < chainBodies.length; i++) {
     
     f = chainBodies[i].initPos.subtract(chainBodies[i].position);
-    f = f.normalize().multiply(0.001);
+    f = f.normalize().multiply(0.0005);
     
     Matter.Body.applyForce(chainBodies[i], chainBodies[i].position, f);
     chainView.segments[i].point.x = chainBodies[i].position.x;
@@ -289,13 +289,14 @@ function onUserIn(id, leftHand, rightHand) {
   var lineThickness = 30;
   var line = new paper.Path.Line({
     strokeColor : 'white',
-    strokeWidth : lineThickness
+    strokeWidth : lineThickness,
+    strokeCap : 'round'
   });
   line.visible = isActive;
   group.addChild(line);
   var user = {
     bodyId    : id,
-    fixture   : physics.addHandLineRect(line, leftHand, rightHand, lineThickness),
+    fixture   : physics.addHandLineRect(line, leftHand, rightHand, lineThickness*0.8),
     leftHand  : leftHand,
     rightHand : rightHand,
     line : line
