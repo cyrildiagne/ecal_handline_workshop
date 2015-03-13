@@ -20,7 +20,7 @@ function setup() {
 
   // set it up with our project's metadatas
   app.setup({
-    projectName : '..',
+    projectName : 'Typonic',
     author1 : 'Lilou Bellenot',
     author2 : 'Lara Défayes'
   });
