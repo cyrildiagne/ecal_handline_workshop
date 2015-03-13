@@ -13,6 +13,7 @@ var sideBall = true;
 var radius = 30;
 var gameOver = false;
 var sounds = [];
+var playSound = false;
 
 
 /* 
@@ -26,7 +27,7 @@ function setup() {
     author1 : 'Mylène Dreyer',
     author2 : 'Bérénice de Casteja'
   });
-  app.usersOffset.y = 200;
+  app.usersOffset.y = 300;
 
   setupPhysics();
   addWall(paper.view.bounds.height*0.75);
@@ -85,7 +86,7 @@ function createNewBridge(leftPos, rightPos) {
 
 function addWall(poswall) {
 
-  var wRect = 100;
+  var wRect = 80;
   //var hRect = 30;
 
   var hRect = paper.view.bounds.height/1.5;
@@ -172,7 +173,7 @@ function addMoreBalls(posx){
 
 
 function addSound(){
-  var audio = new Audio('assets/tuna/drop01.mp3');
+  var audio = new Audio('assets/tuna/bulles04b.mp3');
   audio.play();
 }
 
@@ -217,7 +218,7 @@ var i, bridge;
 
 //----------------------------------------------------------------------
 
-  var ballscount = 1;
+  var ballscount = 6;
   if((timeSinceLastBall += dt) > 500 && balls.length < ballscount) {
     addBall();
     //addSound();
@@ -263,14 +264,10 @@ function checkWinner(){
       .css('width', '200px')
       .css('height', '100px')
       .css('position', 'absolute')
-      .css('top', '100px')
-      .css('left', '20%')
+      .css('top', '10%')
+      .css('left', '10%')
       .appendTo('body');
-      
-
-
-
-
+      addSound();
 
      }
      else if(rightWin)
@@ -287,15 +284,17 @@ function checkWinner(){
       .css('width', '200px')
       .css('height', '100px')
       .css('position', 'absolute')
-      .css('top', '100px')
-      .css('left', '70%')
+      .css('top', '10%')
+      .css('right', '15%')
       .appendTo('body');
+      addSound();
       
      }
 
      setTimeout (function(){
       window.location.reload();
      },15000);
+
      gameOver = true;
 
    }
@@ -304,24 +303,31 @@ function checkWinner(){
 
     if (leftWin){
       
-
       setTimeout (function(){
-        addMoreBalls(paper.view.bounds.width * 0.75);
-        addNoise();     
+        addMoreBalls(paper.view.bounds.width * 0.75);    
       },1000);
+
+      // if(!playSound){
+      //   addSound();
+      //   console.log("play right");
+
+      // }
+
     }
 
     else if (rightWin){
      
-       
       setTimeout (function(){
         addMoreBalls(paper.view.bounds.width * 0.25);
-         addSound();
-         
-        
        },1000);
+      //     if(!playSound){
+      //   addSound();
+      //   console.log("play left")
 
+      // }
     }
+    playSound = true;
+
 };
 
 
@@ -351,6 +357,7 @@ function onUserIn(id, leftHand, rightHand) {
     bridge : createNewBridge(leftHand.position, rightHand.position)
   };
   users.push(user);
+
 }
 
 
