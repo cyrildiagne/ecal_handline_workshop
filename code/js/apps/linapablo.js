@@ -133,7 +133,7 @@ function ocrLoop(){
   var ocrText;
   if(isActive){ ocrText = OCRAD(imageData);}
   if(ocrText) console.log(ocrText);
-  document.getElementById('projectTitle').innerHTML = ocrText;
+  document.getElementById('projectTitle').innerHTML = 'WORK OUT ' + ocrText;
 
   raster.visible = false;
 
