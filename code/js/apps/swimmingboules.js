@@ -209,7 +209,7 @@ var i, bridge;
 
 //----------------------------------------------------------------------
 
-  var ballscount = 3;
+  var ballscount = 1;
   if((timeSinceLastBall += dt) > 500 && balls.length < ballscount) {
     addBall();
     addSound();
@@ -258,6 +258,7 @@ function checkWinner(){
       .css('top', '100px')
       .css('left', '20%')
       .appendTo('body');
+      
 
 
 
@@ -281,8 +282,7 @@ function checkWinner(){
       .css('top', '100px')
       .css('left', '70%')
       .appendTo('body');
-
-
+      
      }
 
      setTimeout (function(){
@@ -291,16 +291,20 @@ function checkWinner(){
      gameOver = true;
    }
 
+
+
     if (leftWin){
-         setTimeout (function(){
+      
+      setTimeout (function(){
       addMoreBalls(paper.view.bounds.width * 0.75);
-      //addSound();
+      
      },1000);
     }
     else if (rightWin){
-               setTimeout (function(){
+      
+      setTimeout (function(){
       addMoreBalls(paper.view.bounds.width * 0.25);
-      //addSound();
+      
      },1000);
 
     }
