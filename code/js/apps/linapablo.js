@@ -30,6 +30,7 @@ function setup() {
     author1 : 'Lina Berjaner',
     author2 : 'Pablo Perez'
   });
+  app.usersOffset.y = 200;
 
   setupPhysics();
 
