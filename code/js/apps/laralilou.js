@@ -3,11 +3,12 @@ var app   = null,
     levelItem = null,
     traitsArray = [];
 var howls =  {};
+var levelId, levelName;
 
-  var lastSounds = [
-       'assets/laralilou/stronger/all.mp3',
-  ]
+var levels = ['stronger', 'getbusy'];
+var lastSounds = [];
 
+var hasLastSoundBeenPlayed = false;
 /* 
   called once at initialisation
 */
@@ -26,9 +27,21 @@ function setup() {
 
   app.usersOffset.y = 200;
 
+
+  levelId = getParam('level') || 0;
+  levelName = levels[levelId];
+
+  lastSounds = [
+       'assets/laralilou/sounds/'+levelName+'/all.mp3',
+  ]
   addSound();
 
-importSVG('assets/testparse/level2.svg');
+
+  $(window).click(function(){
+    win();
+  });
+
+  importSVG('assets/laralilou/svg/'+levelName+'.svg');
 }
 
 function addSound() {
@@ -37,10 +50,10 @@ function addSound() {
 
  //preload holw object 
  var sounds = [
-      'assets/laralilou/stronger/1.mp3',
-      'assets/laralilou/stronger/2.mp3',
-      'assets/laralilou/stronger/3.mp3',
-      'assets/laralilou/stronger/4.mp3'
+      'assets/laralilou/sounds/'+levelName+'/1.mp3',
+      'assets/laralilou/sounds/'+levelName+'/2.mp3',
+      'assets/laralilou/sounds/'+levelName+'/3.mp3',
+      'assets/laralilou/sounds/'+levelName+'/4.mp3'
       ]
 
   howls =  {};
@@ -56,26 +69,6 @@ function addSound() {
       urls: [lastSounds[i]]
     });
   }
-
-
-//console.log(howls);
-
-//   // load our sound
-//   var sound = new Howl({
-//     urls: [
-//       'assets/laralilou/stronger/3.mp3',
-//       'assets/laralilou/stronger/2.mp3',
-//       'assets/laralilou/stronger/3.mp3',
-//       'assets/laralilou/stronger/4.mp3'
-//       ] ,
-//     loop: false
-//   });
-  
-
-   // return {
-   //  sound : sound,
-
-   // };
 }
 
 
@@ -179,40 +172,32 @@ for (var i = users.length - 1; i >= 0; i--)
     //console.log(dg0+dd1);
     if (dg0+dd1 < distmax || dd0+dg1 < distmax) {
       var l = users[i].line;
-      if (isLevelCompleted()) {
+      if (isLevelCompleted() && !hasLastSoundBeenPlayed) {
 
-        playLastSound();
-        
-      } else{
+     
 
+        win();
 
-      
+      } 
+      else
+      {
+        if (l.visible) 
+        {
+          traitsArray[j].item.visible = true;
+          
+          if (!isLevelCompleted())
+          {
+            playRandomSound();
+          }
+          
+          l.visible = false;
 
-      if (l.visible) {
-        traitsArray[j].item.visible = true;
-        //console.log("done");
+          setTimeout(function(){
+            l.visible = true;
+            console.log(l);
+          }, 1000);
 
-
-
-        var sounds = [
-        'assets/laralilou/stronger/1.mp3',
-        'assets/laralilou/stronger/2.mp3',
-        'assets/laralilou/stronger/3.mp3',
-        'assets/laralilou/stronger/4.mp3'
-        ];
-        var soundsFile = sounds[Math.floor(Math.random()*sounds.length)];
-        console.log(soundsFile);
-        console.log(howls);
-        howls[soundsFile].play();
-
-        l.visible = false;
-
-        setTimeout(function(){
-          l.visible = true;
-          console.log(l);
-        }, 1000);
-
-      }
+        }
     }
       
     };
@@ -238,10 +223,48 @@ for (var i = users.length - 1; i >= 0; i--)
 
 }
 
+
+
+function win(){
+      setInterval(function(){
+        $("body").toggleClass("backgroundRed");
+     },80)
+  
+  playLastSound();
+  
+  hasLastSoundBeenPlayed = true;
+  setTimeout(function(){
+    levelId++;
+    if(levelId>=levels.length){
+      levelId = 0;
+    }
+    var url = window.location.origin;
+    url += '?app=laralilou&level='+levelId;
+
+    ws = getParam('socket');
+    if(ws) {
+      url += '&socket='+ws;
+    }
+    window.location.href = url;
+  }, 9000);
+}
+
 function playLastSound()
 {
   var lastSoundFileName = lastSounds[0];
   howls[lastSoundFileName].play();
+}
+
+function playRandomSound()
+{
+  var sounds = [
+            'assets/laralilou/sounds/'+levelName+'/1.mp3',
+            'assets/laralilou/sounds/'+levelName+'/2.mp3',
+            'assets/laralilou/sounds/'+levelName+'/3.mp3',
+            'assets/laralilou/sounds/'+levelName+'/4.mp3'
+            ];
+  var soundsFile = sounds[Math.floor(Math.random()*sounds.length)];
+  howls[soundsFile].play();
 }
 
 function isLevelCompleted()
@@ -257,18 +280,6 @@ function isLevelCompleted()
   return true;
 }
 
-
-/* 
-  called everytime a new user enters
-  this is usually where you create a new line
-  - leftHand and rightHand are objects structured as :
-  {
-    position : paper.Point,
-    velocity : paper.Point
-    joint : ks.Joint
-    state : "unknown", "nottracked", "open" or "closed"
-  }
-*/
 function onUserIn(id, leftHand, rightHand) {
 
   // create a line with paperjs
