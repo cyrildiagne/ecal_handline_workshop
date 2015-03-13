@@ -53,7 +53,7 @@ var audio = new Audio('assets/ballbounce/sounds/clave2.aiff');
 }
 
 function playSoundLoose(){
-var audio = new Audio('assets/ballbounce/sounds/gamefail.wav');
+var audio = new Audio('assets/ballbounce/sounds/gamefail.mp3');
  audio.play();
 }
 
