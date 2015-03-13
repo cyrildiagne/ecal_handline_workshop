@@ -12,6 +12,7 @@ var physics = null,
 var sideBall = true;
 var radius = 30;
 var gameOver = false;
+var sounds = [];
 
 
 /* 
@@ -175,6 +176,13 @@ function addSound(){
   audio.play();
 }
 
+function addNoise(){
+  var sound = new Howl({
+    sounds: ['assets/tuna/drop01.mp3'],
+    loop: false,
+  });
+}
+
 
 
 /* 
@@ -212,7 +220,7 @@ var i, bridge;
   var ballscount = 1;
   if((timeSinceLastBall += dt) > 500 && balls.length < ballscount) {
     addBall();
-    addSound();
+    //addSound();
     timeSinceLastBall = 0;
     console.log(timeSinceLastBall);
     
@@ -289,23 +297,29 @@ function checkWinner(){
       window.location.reload();
      },15000);
      gameOver = true;
+
    }
 
 
 
     if (leftWin){
       
+
       setTimeout (function(){
-      addMoreBalls(paper.view.bounds.width * 0.75);
-      
-     },1000);
+        addMoreBalls(paper.view.bounds.width * 0.75);
+        addNoise();     
+      },1000);
     }
+
     else if (rightWin){
-      
+     
+       
       setTimeout (function(){
-      addMoreBalls(paper.view.bounds.width * 0.25);
-      
-     },1000);
+        addMoreBalls(paper.view.bounds.width * 0.25);
+         addSound();
+         
+        
+       },1000);
 
     }
 };
