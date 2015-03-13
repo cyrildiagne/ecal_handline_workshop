@@ -352,6 +352,7 @@ function onUserIn(id, leftHand, rightHand) {
     bridge : createNewBridge(leftHand.position, rightHand.position)
   };
   users.push(user);
+  
 }
 
 
