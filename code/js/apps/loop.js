@@ -6,7 +6,7 @@ var filish = ['assets/loop/1.svg','assets/loop/2.svg','assets/loop/3.svg','asset
               'assets/loop/6.svg','assets/loop/7.svg','assets/loop/8.svg','assets/loop/9.svg','assets/loop/10.svg',
               'assets/loop/11.svg','assets/loop/12.svg','assets/loop/13.svg','assets/loop/14.svg','assets/loop/15.svg',
               'assets/loop/16.svg','assets/loop/17.svg','assets/loop/18.svg','assets/loop/19.svg','assets/loop/20.svg',
-              'assets/loop/21.svg'];
+              'assets/loop/21.svg','assets/loop/22.svg','assets/loop/23.svg','assets/loop/24.svg','assets/loop/25.svg'];
 
 /* 
   called once at initialisation
@@ -19,7 +19,7 @@ function setup() {
 
   // set it up with our project's metadatas
   app.setup({
-    projectName : 'loop',
+    projectName : 'looping ghost',
     author1 : 'Benjamin',
     author2 : 'Alexia '
   });
@@ -72,6 +72,12 @@ function update(dt) {
 
       }
     }
+  }
+
+  while (ghosts.length > 18) {
+    var ghost = ghosts[0];
+    ghost.item.remove();
+    ghosts.splice(0, 1);
   }
 
   // GHOST PLAYBACK

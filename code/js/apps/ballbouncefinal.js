@@ -5,7 +5,7 @@ var app   = null,
     velocity = null;
 
     var currentLevelIndex = 1;
-    var totalLevelNumber = 7;
+    var totalLevelNumber = 8;
 /*
   called once at initialisation
 */
@@ -28,6 +28,7 @@ function setup() {
     author1 : 'Pierre Georges',
     author2 : 'Mirko Stanchieri'
   });
+  app.usersOffset.y = 200;
 
   setupBall();
 
@@ -50,12 +51,14 @@ function playSoundHit2(){
 var audio = new Audio('assets/ballbounce/sounds/clave2.aiff');
  audio.play();
 }
-function playSoundBonus(){
-var audio = new Audio('assets/ballbounce/sounds/bonus.wav');
+
+function playSoundLoose(){
+var audio = new Audio('assets/ballbounce/sounds/gamefail.mp3');
  audio.play();
 }
-function playSoundLoose(){
-var audio = new Audio('assets/ballbounce/sounds/gamefail.wav');
+
+function playSoundWin(){
+var audio = new Audio('assets/ballbounce/sounds/bonus.wav');
  audio.play();
 }
 
@@ -133,10 +136,7 @@ function parse(item) {
       items.push(item);
 
 
-//----> OBSACLES VERTICAUX <----\\
-
-
-//----> OBSACLES HORIZONTAUX <----\\
+//----> OBSACLES VERTICAUX BOUGENT <----\
 
 
 
@@ -177,7 +177,7 @@ function setupBall() {
 
 function resetBall() {  
   ball.position = new paper.Point([0, paper.view.center.y]);
-  velocity = new paper.Point(2.5 * 5.0, 0);
+  velocity = new paper.Point(3, 0);
 }
 
 function resetLevel() {
@@ -243,6 +243,7 @@ function update(dt) {
     {
       user.canPlaceLine = true;
     }
+    
 
   }
 
@@ -294,6 +295,10 @@ function updateBall() {
         console.log("hourra");
         playSoundHit();
 
+      } else if(item.strokeColor.toCSS() == 'rgb(58,82,135)') {
+        console.log("obstacle hited");
+        
+
       } else if(item.strokeColor.toCSS() == 'rgb(255,255,255)') {
         console.log("hourra_2");
         playSoundHit2();
@@ -307,7 +312,7 @@ function updateBall() {
         console.log("c'est pas rouge");
         
       } else if(item.strokeColor.toCSS() == 'rgb(0,255,0)') {
-        
+        playSoundWin();
         destroyLevel();
         nextLevel();
         console.log("WIN");

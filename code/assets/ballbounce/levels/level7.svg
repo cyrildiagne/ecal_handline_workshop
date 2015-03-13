@@ -1,109 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 18.1.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Calque_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 1024 768" enable-background="new 0 0 1024 768" xml:space="preserve">
 <g id="background">
 	<rect x="-0.7" fill="#242C51" width="1024.7" height="768"/>
 </g>
 <g id="barrieres">
 	<rect x="-0.7" y="756.6" fill="#181E35" width="1024.7" height="11.4"/>
-	<rect x="-0.7" y="0" fill="#181E35" width="1024.7" height="11.4"/>
-	<path fill="none" stroke="#181E35" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-		M639.2,652c-17.9-53-68.2-91.5-127.4-91.5S402.3,599,384.4,652"/>
+	<rect x="-0.7" fill="#181E35" width="1024.7" height="11.4"/>
 	
-		<line fill="none" stroke="#181E35" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="512" y1="558" x2="512" y2="470"/>
+		<line fill="none" stroke="#181E35" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="192" y1="575" x2="192" y2="193"/>
+	
+		<line fill="none" stroke="#181E35" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="599" y1="394" x2="599" y2="12"/>
+	
+		<line fill="none" stroke="#181E35" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="982" y1="560" x2="982" y2="256"/>
+	
+		<line fill="none" stroke="#181E35" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" x1="759" y1="757" x2="759" y2="509"/>
 </g>
 <g id="pics">
 	<g>
 		
 			<polyline fill="none" stroke="#40518D" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-			951.8,682.6 951.4,657.4 926.2,657.8 		"/>
+			456.2,574.5 474,556.7 491.8,574.5 		"/>
 		
 			<polyline fill="none" stroke="#40518D" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-			926.2,657.9 925.8,632.7 900.6,633.1 		"/>
+			491.8,574.5 509.6,556.7 527.3,574.5 		"/>
 		
 			<polyline fill="none" stroke="#40518D" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-			900.6,633.1 900.2,608 875,608.4 		"/>
+			527.3,574.5 545.1,556.7 562.9,574.5 		"/>
 		
 			<polyline fill="none" stroke="#40518D" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-			875.1,608.5 874.6,583.3 849.5,583.7 		"/>
-		<path fill="none" stroke="#40518D" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="
-			M849.5,583.7"/>
+			562.9,574.5 580.7,556.7 598.5,574.5 		"/>
+		
+			<polyline fill="none" stroke="#40518D" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+			598.5,574.5 616.3,556.7 634.1,574.5 		"/>
+		
+			<polyline fill="none" stroke="#40518D" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+			634,574.5 651.8,556.7 669.6,574.5 		"/>
+		
+			<polyline fill="none" stroke="#40518D" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+			669.6,574.5 687.4,556.7 705.2,574.5 		"/>
+		
+			<polyline fill="none" stroke="#40518D" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
+			705.1,574.5 722.9,556.7 740.7,574.5 		"/>
 	</g>
 	<g>
 		
 			<polyline fill="none" stroke="#40518D" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-			616.7,218.5 591.5,218.9 592,244.1 		"/>
+			987.7,231.8 962.6,231.4 963,206.2 		"/>
 		
 			<polyline fill="none" stroke="#40518D" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-			592,244 566.8,244.5 567.3,269.6 		"/>
+			963,206.2 937.9,205.8 938.3,180.6 		"/>
 		
 			<polyline fill="none" stroke="#40518D" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-			567.3,269.6 542.1,270.1 542.6,295.2 		"/>
+			938.3,180.6 913.2,180.2 913.6,155 		"/>
 		
 			<polyline fill="none" stroke="#40518D" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-			542.6,295.2 517.4,295.6 517.9,320.8 		"/>
+			913.6,155.1 888.5,154.6 888.9,129.5 		"/>
 		
 			<polyline fill="none" stroke="#40518D" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-			517.9,320.8 492.7,321.2 493.1,346.4 		"/>
+			888.9,129.5 863.8,129 864.2,103.9 		"/>
 		
 			<polyline fill="none" stroke="#40518D" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-			493.2,346.4 468,346.8 468.5,372 		"/>
+			864.2,103.9 839.1,103.5 839.5,78.3 		"/>
 		
 			<polyline fill="none" stroke="#40518D" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-			468.5,372 443.3,372.4 443.7,397.6 		"/>
+			839.5,78.3 814.4,77.9 814.8,52.7 		"/>
 		
 			<polyline fill="none" stroke="#40518D" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-			443.8,397.5 418.6,398 419.1,423.1 		"/>
+			814.8,52.7 789.7,52.3 790.1,27.1 		"/>
 	</g>
 	<g>
 		
 			<polyline fill="none" stroke="#40518D" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-			443.7,157.5 425.9,139.7 408.1,157.5 		"/>
+			428.6,183.7 410.8,201.5 393,183.7 		"/>
 		
 			<polyline fill="none" stroke="#40518D" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-			408.2,157.5 390.4,139.7 372.6,157.5 		"/>
+			393.1,183.7 375.3,201.5 357.5,183.7 		"/>
 		
 			<polyline fill="none" stroke="#40518D" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-			372.6,157.5 354.8,139.7 337,157.5 		"/>
+			357.5,183.7 339.7,201.5 321.9,183.7 		"/>
 		
 			<polyline fill="none" stroke="#40518D" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-			337.1,157.5 319.3,139.7 301.5,157.5 		"/>
+			321.9,183.7 304.1,201.5 286.3,183.7 		"/>
 		
 			<polyline fill="none" stroke="#40518D" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-			301.5,157.5 283.7,139.7 265.9,157.5 		"/>
+			286.3,183.7 268.6,201.5 250.8,183.7 		"/>
 		
 			<polyline fill="none" stroke="#40518D" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-			265.9,157.5 248.1,139.7 230.3,157.5 		"/>
-		
-			<polyline fill="none" stroke="#40518D" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-			230.3,157.5 212.6,139.7 194.8,157.5 		"/>
-		
-			<polyline fill="none" stroke="#40518D" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="
-			194.8,157.5 177,139.7 159.2,157.5 		"/>
+			250.8,183.7 233,201.5 215.2,183.7 		"/>
 	</g>
 </g>
 <g id="KINECT_walls">
 	<line fill="none" stroke="#0000FF" stroke-width="3" stroke-miterlimit="10" x1="-1" y1="11.5" x2="1024" y2="11.5"/>
 	<line fill="none" stroke="#0000FF" stroke-width="3" stroke-miterlimit="10" x1="-1" y1="756.5" x2="1024" y2="756.5"/>
-	<line fill="none" stroke="#0000FF" stroke-width="3" stroke-miterlimit="10" x1="511.5" y1="558" x2="511.5" y2="470"/>
-	<line fill="none" stroke="#0000FF" stroke-width="3" stroke-miterlimit="10" x1="512" y1="558" x2="557.4" y2="568.5"/>
-	<line fill="none" stroke="#0000FF" stroke-width="3" stroke-miterlimit="10" x1="557.4" y1="568.5" x2="590.3" y2="583.7"/>
-	<line fill="none" stroke="#0000FF" stroke-width="3" stroke-miterlimit="10" x1="590.3" y1="583.7" x2="614.6" y2="608.5"/>
-	<line fill="none" stroke="#0000FF" stroke-width="3" stroke-miterlimit="10" x1="614.6" y1="608.5" x2="631" y2="632.7"/>
-	<line fill="none" stroke="#0000FF" stroke-width="3" stroke-miterlimit="10" x1="631" y1="632.7" x2="639.2" y2="652"/>
-	<line fill="none" stroke="#0000FF" stroke-width="3" stroke-miterlimit="10" x1="511.2" y1="558" x2="465.8" y2="568.5"/>
-	<line fill="none" stroke="#0000FF" stroke-width="3" stroke-miterlimit="10" x1="465.8" y1="568.5" x2="432.9" y2="583.7"/>
-	<line fill="none" stroke="#0000FF" stroke-width="3" stroke-miterlimit="10" x1="432.9" y1="583.7" x2="408.6" y2="608.5"/>
-	<line fill="none" stroke="#0000FF" stroke-width="3" stroke-miterlimit="10" x1="408.6" y1="608.5" x2="392.3" y2="632.7"/>
-	<line fill="none" stroke="#0000FF" stroke-width="3" stroke-miterlimit="10" x1="392.3" y1="632.7" x2="384" y2="652"/>
+	<line fill="none" stroke="#0000FF" stroke-width="3" stroke-miterlimit="10" x1="191.5" y1="575" x2="191.5" y2="193"/>
+	<line fill="none" stroke="#0000FF" stroke-width="3" stroke-miterlimit="10" x1="598.5" y1="394" x2="598.5" y2="12"/>
+	<line fill="none" stroke="#0000FF" stroke-width="3" stroke-miterlimit="10" x1="981.5" y1="560" x2="981.5" y2="256"/>
+	<line fill="none" stroke="#0000FF" stroke-width="3" stroke-miterlimit="10" x1="758.5" y1="757" x2="758.5" y2="509"/>
 	<line fill="none" stroke="#0000FF" stroke-width="3" stroke-miterlimit="10" x1="0.5" y1="12" x2="0.5" y2="757"/>
 </g>
 <g id="KINECT_kill">
-	<line fill="none" stroke="#FF0000" stroke-width="3" stroke-miterlimit="10" x1="443" y1="148.5" x2="158" y2="148.5"/>
-	<line fill="none" stroke="#FF0000" stroke-width="3" stroke-miterlimit="10" x1="614.3" y1="218.7" x2="412.7" y2="420.3"/>
-	<line fill="none" stroke="#FF0000" stroke-width="3" stroke-miterlimit="10" x1="961.3" y1="682.3" x2="855.8" y2="576.8"/>
+	<line fill="none" stroke="#FF0000" stroke-width="3" stroke-miterlimit="10" x1="741" y1="566.5" x2="456" y2="566.5"/>
+	<line fill="none" stroke="#FF0000" stroke-width="3" stroke-miterlimit="10" x1="784.3" y1="32.3" x2="982.3" y2="237.3"/>
+	<line fill="none" stroke="#FF0000" stroke-width="3" stroke-miterlimit="10" x1="429" y1="193.5" x2="215" y2="193.5"/>
 </g>
 <g id="KINECT_end">
 	<line fill="none" stroke="#00FF00" stroke-width="3" stroke-miterlimit="10" x1="1022.5" y1="0" x2="1022.5" y2="768"/>
