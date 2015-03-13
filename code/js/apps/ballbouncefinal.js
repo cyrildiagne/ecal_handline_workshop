@@ -4,7 +4,7 @@ var app   = null,
     ball = null,
     velocity = null;
 
-    var currentLevelIndex = 2;
+    var currentLevelIndex = 1;
     var totalLevelNumber = 7;
 /*
   called once at initialisation
@@ -15,7 +15,7 @@ var app   = null,
 
 
 function setup() {
-  
+  playSound();
   console.log("Setup");
   console.log("Current level index is " + currentLevelIndex);
   // create an HL app to start retrieving kinect datas
@@ -37,20 +37,25 @@ function setup() {
 }
 
 function playSound(){
-var audio = new Audio('assets/ballbounce/sounds/');
+var audio = new Audio('assets/ballbounce/sounds/ambiance.mp3');
+ audio.loop = true;
  audio.play();
 }
 
 function playSoundHit(){
-var audio = new Audio('assets/testparse/smb3_coin.wav');
+var audio = new Audio('assets/ballbounce/sounds/clave.wav');
+ audio.play();
+}
+function playSoundHit2(){
+var audio = new Audio('assets/ballbounce/sounds/clave2.aiff');
  audio.play();
 }
 function playSoundBonus(){
-var audio = new Audio('assets/testparse/smb3_coin.wav');
+var audio = new Audio('assets/ballbounce/sounds/bonus.wav');
  audio.play();
 }
 function playSoundLoose(){
-var audio = new Audio('assets/testparse/smb3_coin.wav');
+var audio = new Audio('assets/ballbounce/sounds/gamefail.wav');
  audio.play();
 }
 
@@ -99,6 +104,7 @@ function parse(item) {
     var fc = item.strokeColor;
     if(!fc) return;
     window.fc = fc;
+
     
 //----> BORD <----\\
 
@@ -286,18 +292,18 @@ function updateBall() {
       bounce(ball.position, item.segments[0].point, item.segments[1].point);
       if(item.strokeColor.toCSS() == 'rgb(0,0,255)') {
         console.log("hourra");
-        //playSound();
+        playSoundHit();
 
       } else if(item.strokeColor.toCSS() == 'rgb(255,255,255)') {
         console.log("hourra_2");
-        //playSound();
+        playSoundHit2();
         items.splice(i,1);
         i--;
         item.remove();
 
       } else if(item.strokeColor.toCSS() == 'rgb(255,0,0)') {
         resetBall();
-
+        playSoundLoose();
         console.log("c'est pas rouge");
         
       } else if(item.strokeColor.toCSS() == 'rgb(0,255,0)') {
