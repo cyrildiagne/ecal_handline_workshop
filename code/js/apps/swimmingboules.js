@@ -27,7 +27,7 @@ function setup() {
     author1 : 'Mylène Dreyer',
     author2 : 'Bérénice de Casteja'
   });
-  app.usersOffset.y = 200;
+  app.usersOffset.y = 300;
 
   setupPhysics();
   addWall(paper.view.bounds.height*0.75);
@@ -86,7 +86,7 @@ function createNewBridge(leftPos, rightPos) {
 
 function addWall(poswall) {
 
-  var wRect = 100;
+  var wRect = 80;
   //var hRect = 30;
 
   var hRect = paper.view.bounds.height/1.5;
@@ -265,8 +265,9 @@ function checkWinner(){
       .css('height', '100px')
       .css('position', 'absolute')
       .css('top', '10%')
-      .css('left', '15%')
+      .css('left', '10%')
       .appendTo('body');
+      addSound();
 
      }
      else if(rightWin)
@@ -286,6 +287,7 @@ function checkWinner(){
       .css('top', '10%')
       .css('right', '15%')
       .appendTo('body');
+      addSound();
       
      }
 
@@ -304,10 +306,12 @@ function checkWinner(){
       setTimeout (function(){
         addMoreBalls(paper.view.bounds.width * 0.75);    
       },1000);
-      if(!playSound){
-        console.log("play right");
-        addSound();
-      }
+
+      // if(!playSound){
+      //   addSound();
+      //   console.log("play right");
+
+      // }
 
     }
 
@@ -316,10 +320,11 @@ function checkWinner(){
       setTimeout (function(){
         addMoreBalls(paper.view.bounds.width * 0.25);
        },1000);
-          if(!playSound){
-          console.log("play left")
-        addSound();
-      }
+      //     if(!playSound){
+      //   addSound();
+      //   console.log("play left")
+
+      // }
     }
     playSound = true;
 
@@ -352,7 +357,7 @@ function onUserIn(id, leftHand, rightHand) {
     bridge : createNewBridge(leftHand.position, rightHand.position)
   };
   users.push(user);
-  
+
 }
 
 

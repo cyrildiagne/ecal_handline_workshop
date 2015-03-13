@@ -5,7 +5,7 @@ var app   = null,
 var howls =  {};
 var levelId, levelName;
 
-var levels = ['stronger', 'getbusy'];
+var levels = ['stronger', 'getbusy', 'callmemaybe', 'crazyinlove', 'geturfreakon', 'golddigger', 'livinlavidaloca' ];
 var lastSounds = [];
 
 var hasLastSoundBeenPlayed = false;
@@ -37,9 +37,9 @@ function setup() {
   addSound();
 
 
-  $(window).click(function(){
-    win();
-  });
+  // $(window).click(function(){
+  //   win();
+  // });
 
   importSVG('assets/laralilou/svg/'+levelName+'.svg');
 }
@@ -106,7 +106,22 @@ function parse(item){
     window.sc = sc;
     //console.log(sc.toCSS());
     // transforme tous les stroke en cyan
-    item.strokeColor = 'cyan';
+    if (levelName == 'stronger') {
+      item.strokeColor = 'cyan';
+    } else if (levelName == 'getbusy') {
+      item.strokeColor = '#de2b00';
+    } else if (levelName == 'callmemaybe') {
+      item.strokeColor = '#f900ca';
+    } else if (levelName == 'crazyinlove') {
+      item.strokeColor = '#4902af';
+    } else if (levelName == 'geturfreakon') {
+      item.strokeColor = '#12d879';
+    } else if (levelName ==  'golddigger') {
+      item.strokeColor = '#d8c012';
+    } else if (levelName ==  'livinlavidaloca') {
+      item.strokeColor = '#d6137a';
+    }
+    
     var hb = new paper.Point(levelItem.bounds.width*0.5, levelItem.bounds.height*0.5);
     var trait = {
       from : item.segments[0].point.add(paper.view.center).subtract(hb),
@@ -194,7 +209,7 @@ for (var i = users.length - 1; i >= 0; i--)
 
           setTimeout(function(){
             l.visible = true;
-            console.log(l);
+           // console.log(l);
           }, 1000);
 
         }
@@ -226,9 +241,13 @@ for (var i = users.length - 1; i >= 0; i--)
 
 
 function win(){
-      setInterval(function(){
-        $("body").toggleClass("backgroundRed");
-     },80)
+
+setInterval(function () {
+    $("body").css("background-color", function () {
+        this.switch = !this.switch
+        return this.switch ? "white" : ""
+    });
+}, 80)
   
   playLastSound();
   
@@ -281,10 +300,26 @@ function isLevelCompleted()
 }
 
 function onUserIn(id, leftHand, rightHand) {
+  var couleur = 'cyan';
+   if (levelName == 'stronger') {
+      couleur = 'cyan';
+    } else if (levelName == 'getbusy') {
+      couleur = '#de2b00';
+    } else if (levelName == 'callmemaybe') {
+      couleur = '#f900ca';
+    } else if (levelName == 'crazyinlove') {
+      couleur = '#4902af';
+    } else if (levelName == 'geturfreakon') {
+      couleur = '#12d879';
+    } else if (levelName ==  'golddigger') {
+      couleur = '#d8c012';
+    } else if (levelName ==  'livinlavidaloca') {
+      couleur = '#d6137a';
+    }
 
   // create a line with paperjs
   var line = new paper.Path.Line({
-    strokeColor : 'cyan',
+    strokeColor : couleur,
     strokeWidth : 10,
   
   });
@@ -301,7 +336,6 @@ function onUserIn(id, leftHand, rightHand) {
   // and add it to our users table
   users.push(user);
 }
-
 
 /* 
   called everytime a user leaves
