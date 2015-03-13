@@ -2,11 +2,6 @@ var app   = null,
     users = [],
     ghosts = [];
 
-var filish = ['assets/loop/1.svg','assets/loop/2.svg','assets/loop/3.svg','assets/loop/4.svg','assets/loop/5.svg',
-              'assets/loop/6.svg','assets/loop/7.svg','assets/loop/8.svg','assets/loop/9.svg','assets/loop/10.svg',
-              'assets/loop/11.svg','assets/loop/12.svg','assets/loop/13.svg','assets/loop/14.svg','assets/loop/15.svg',
-              'assets/loop/16.svg','assets/loop/17.svg','assets/loop/18.svg','assets/loop/19.svg','assets/loop/20.svg',
-              'assets/loop/21.svg'];
 
 /* 
   called once at initialisation
@@ -36,41 +31,28 @@ function update(dt) {
 
   for(var i=0; i<users.length; i++) {
     user = users[i];
-
-    // if we're not recording
     if (!user.isRecording) {
       if(user.leftHand.state == "closed" || user.rightHand.state == "closed") {
-        //console.log(user.bodyId + ' about to record');
         user.isRecording = true;
-        user.ghost = null;
-        var usingFilish = filish[Math.floor(Math.random()*filish.length)];
-        importSVG(user, usingFilish, function(item, _user){
-          //item.remove();
-          _user.ghost = getNewGhost(item);
-          //console.log(_user.bodyId + ' start record');
-        });
+        user.ghost = getNewGhost(user.item);
       }
+      continue;
     }
-    // otherwise add new frame
-    else if (user.ghost) {
-      var g = user.ghost;
-      //console.log(g.history);
-      // if our ghost has less than 400 frames
-      if(g.history) {
 
-        if(g.history.length < 120) {
-          // add a new frame
-          //console.log(user.bodyId + ' add frame');
-          g.history.push({
-            left : user.leftHand.position.clone(),  // clone main gauche
-            right : user.rightHand.position.clone() // clone main droite
-          });
-        } else {
-          user.isRecording = false;
-          //console.log(user.bodyId + ' recording ended');
-        }
+    // GHOST RECORD
 
-      }
+    var g = user.ghost;
+    //console.log(g.history);
+    // if our ghost has less than 400 frames
+    if(g.history.length < 120) {
+
+      // add a new frame
+      g.history.push({
+        left : user.leftHand.position.clone(),  // clone main gauche
+        right : user.rightHand.position.clone() // clone main droite
+      });
+    } else {
+      user.isRecording = false;
     }
   }
 
@@ -154,37 +136,37 @@ function onUserIn(id, leftHand, rightHand) {
   var shape=null, colors=null, type = '';
   var random = Math.random()*2;
 
-  //console.log('new user');
-  
-  // var usingFilish = filish[Math.floor(Math.random()*filish.length)];
 
-  // importSVG(usingFilish, function(item){
-  //   //console.log(usingFilish);
-  //   item.visible = false;
+  
+  var filish = ['assets/loop/2.svg','assets/loop/3.svg','assets/loop/4.svg','assets/loop/5.svg','assets/loop/6.svg','assets/loop/7.svg','assets/loop/8.svg','assets/loop/9.svg','assets/loop/10.svg','assets/loop11.svg',,'assets/loop/12.svg','assets/loop/13.svg'];
+
+  importSVG(filish[Math.floor(Math.random()*filish.length)], function(item){
+
+    item.visible = false;
 
     // create an object defining our user's properties
     var user = {
       bodyId    : id,
       leftHand  : leftHand,
       rightHand : rightHand,
-      //item      : item,
+      item      : item,
       isRecording  : false
     };
     // and add it to our users table
     users.push(user);
-  // });
+  });
 }
 
 
 function getNewGhost(item) {
   var ghost = {
-    item : item,
+    item : item.clone(),
     history : [],
     currFrame : -1,
     offsetLeft  : new paper.Point(),
     offsetRight : new paper.Point()
   };
-  //ghost.item.visible = true;
+  ghost.item.visible = true;
   // and add it to our ghost table
   ghosts.push(ghost);
   return ghost;
@@ -206,14 +188,13 @@ function onUserOut(id) {
 }
 
 
-function importSVG(user, file, callback){
+function importSVG(file, callback){
 
   paper.project.importSVG(file, function(item){
     var testy = new paper.Symbol(item);
     var testyItem = testy.place();
     item.rotation = 90;
     // testyItem.position = paper.view.center;
-    //console.log(file + ' loaded');
-    callback(testyItem,user);
+    callback(testyItem);
   });
 }

@@ -6,7 +6,7 @@ var activePath;
 var activePaths = [];
 var pUsers;
 var min = 50;
-var max = 500;
+var max = 600;
 
 function setup() {
 	console.log("ciao!");
@@ -17,6 +17,7 @@ function setup() {
     author1 : 'Edina ',
     author2 : 'Jean Pablo & Karen'
   });
+  app.usersOffset.y = 150;
 }
 
 
@@ -81,11 +82,9 @@ function update(dt)
 					};
 					distance = (-(distance / max)) + 1;
 
-					user.activePath.fillColor = new paper.Color(1, distance);
-					user.activePath.strokeColor = new paper.Color(1, distance);
-					user.activePath.strokeWidth = 0.1;
-
-					//console.log(distance);		
+					user.activePath.fillColor = new paper.Color(distance, 1);
+					user.activePath.strokeColor = new paper.Color(distance, 1);
+					user.activePath.strokeWidth = 0.2;
 
 					user.line.strokeColor = new paper.Color(distance, 1);
 					user.line.strokeWidth = 10;	
