@@ -13,6 +13,7 @@ var sideBall = true;
 var radius = 30;
 var gameOver = false;
 var sounds = [];
+var playSound = false;
 
 
 /* 
@@ -172,7 +173,7 @@ function addMoreBalls(posx){
 
 
 function addSound(){
-  var audio = new Audio('assets/tuna/drop01.mp3');
+  var audio = new Audio('assets/tuna/bulles04b.mp3');
   audio.play();
 }
 
@@ -217,7 +218,7 @@ var i, bridge;
 
 //----------------------------------------------------------------------
 
-  var ballscount = 1;
+  var ballscount = 6;
   if((timeSinceLastBall += dt) > 500 && balls.length < ballscount) {
     addBall();
     //addSound();
@@ -263,14 +264,9 @@ function checkWinner(){
       .css('width', '200px')
       .css('height', '100px')
       .css('position', 'absolute')
-      .css('top', '100px')
-      .css('left', '20%')
+      .css('top', '10%')
+      .css('left', '15%')
       .appendTo('body');
-      
-
-
-
-
 
      }
      else if(rightWin)
@@ -287,8 +283,8 @@ function checkWinner(){
       .css('width', '200px')
       .css('height', '100px')
       .css('position', 'absolute')
-      .css('top', '100px')
-      .css('left', '70%')
+      .css('top', '10%')
+      .css('right', '15%')
       .appendTo('body');
       
      }
@@ -296,6 +292,7 @@ function checkWinner(){
      setTimeout (function(){
       window.location.reload();
      },15000);
+
      gameOver = true;
 
    }
@@ -304,24 +301,28 @@ function checkWinner(){
 
     if (leftWin){
       
-
       setTimeout (function(){
-        addMoreBalls(paper.view.bounds.width * 0.75);
-        addNoise();     
+        addMoreBalls(paper.view.bounds.width * 0.75);    
       },1000);
+      if(!playSound){
+        console.log("play right");
+        addSound();
+      }
+
     }
 
     else if (rightWin){
      
-       
       setTimeout (function(){
         addMoreBalls(paper.view.bounds.width * 0.25);
-         addSound();
-         
-        
        },1000);
-
+          if(!playSound){
+          console.log("play left")
+        addSound();
+      }
     }
+    playSound = true;
+
 };
 
 
