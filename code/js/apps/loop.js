@@ -19,7 +19,7 @@ function setup() {
 
   // set it up with our project's metadatas
   app.setup({
-    projectName : 'loop',
+    projectName : 'looping ghost',
     author1 : 'Benjamin',
     author2 : 'Alexia '
   });
