@@ -44,7 +44,7 @@ that stages the virtual line linking our 2 hands.
 
 _Videoplace_ - MYRON KRUEGER - mid-1970s
 
-### Examples of geometrical properties of this line that you can use :
+** Examples of geometrical properties of this line that you can use : **
 
 - spacial properties
 	* position
