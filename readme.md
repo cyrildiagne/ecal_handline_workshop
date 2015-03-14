@@ -34,6 +34,8 @@ that stages the virtual line linking our 2 hands.
 
 * It's not mandatory but highly encouranged to implement a multi-user system (up to 2 people)
 
+* Sketch your ideas and present them to the group before implementing prototypes
+
 ----
 
 ###
