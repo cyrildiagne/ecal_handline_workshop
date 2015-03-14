@@ -8,6 +8,8 @@
 
 ![image](https://raw.githubusercontent.com/kikko/ecal_handline_workshop/master/screens/default.png)
 
+
+Myron Krueger
 ----
 
 *« Le chemin le plus court d'un point à un autre est la ligne droite,
@@ -24,14 +26,24 @@ Design and create an interactive application based on the body tracking technolo
 that stages the virtual line linking our 2 hands.
 ```
 
+* Study the role played by this virtual line in different situations, activities..etc and derive them to create new ones
+
 * Work as duos
 
 * The application can't use any other tracking information than the hands position (and eventually their open/closed status).
 
 * It's not mandatory but highly encouranged to implement a multi-user system (up to 2 people)
 
+----
 
-Examples of geometrical properties of this line that you can use :
+###
+
+Some references (TBC)
+
+![MYRON KRUEGER](http://www.inventinginteractive.com/wp-content/uploads/2010/03/VideoPlace4-450x304.jpg)
+_Videoplace_ - MYRON KRUEGER - mid-1970s
+
+### Examples of geometrical properties of this line that you can use :
 
 - spacial properties
 	* position
