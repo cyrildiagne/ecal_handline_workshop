@@ -8,8 +8,6 @@
 
 ![image](https://raw.githubusercontent.com/kikko/ecal_handline_workshop/master/screens/default.png)
 
-
-Myron Krueger
 ----
 
 *« Le chemin le plus court d'un point à un autre est la ligne droite,
