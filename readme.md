@@ -38,11 +38,10 @@ that stages the virtual line linking our 2 hands.
 
 ----
 
-###
-
-Some references (TBC)
+### Some references (TBC)
 
 ![MYRON KRUEGER](http://www.inventinginteractive.com/wp-content/uploads/2010/03/VideoPlace4-450x304.jpg)
+
 _Videoplace_ - MYRON KRUEGER - mid-1970s
 
 ### Examples of geometrical properties of this line that you can use :
