@@ -58,10 +58,10 @@ The microsized javascript framework available in this repository aims at getting
 It integrates :
 
 - [kinect2-socket-client](https://github.com/kikko/kinect2-socket-client) to use **kinect 2** streams and playback files
-- [paperJS](http://paperjs.org) for smooth and easy **vector graphics**
-- [gsap](http://greensock.com/gsap) for advanced & fast **general purpose animations**
-- [matter.js](http://brm.io/matter-js) for fast rigid-body **physics** computations
-- [howler.js](https://github.com/goldfire/howler.js) for simple cross-platform **audio playback**
+- [paperJS](http://paperjs.org) for **vector graphics**
+- [gsap](http://greensock.com/gsap) for **general purpose animations**
+- [matter.js](http://brm.io/matter-js) for rigid-body **physics** computations
+- [howler.js](https://github.com/goldfire/howler.js) for cross-platform **audio playback**
 - [jquery](https://jquery.com) for **general purpose** js tools and dom manipulation
 
 ### Getting Started
@@ -132,11 +132,9 @@ function setup() {
 
 To publish your app, you must follow the following rules :
 
-- fork this repository
 - add your `yourappname.js` file in the `js/apps` folder
 - if you have to load some external files (sounds, svg..etc), put them in the `assets/yourappname` folder
 - commit and push your changes
-- ask for a pull request on the main fork
 
 In order to publish your app easily, you **shouldn't modify**  any other file than your `js/apps/yourappname.js` file (for example files like `index.html`, `css/main.css`...etc)
 
@@ -154,3 +152,20 @@ function setup() {
   ...etc
 }
 ```
+
+### Launching live view
+
+`http://localhost:8080/?app=<yourapp>&socket=ws://<windowsmachine_ip>:9092`
+
+* `<yourapp>` is your application filename, without the `.js` extension 
+* `<kinect2socket_ip>` is the ip address of computer running the kinect2-socket application (`localhost` if it's on the same computer)
+
+Pressing tab will bring up the debug view.
+You can click on the kinect2-socket panel at the bottom-right to start recording. Clicking again will stop it and ask you for a file name to save.
+
+### Playing back a replay
+
+`http://localhost:8080/?app=<yourapp>&replay=<your_replay>.json.gz`
+
+* `<yourapp>` is your application filename, without the `.js` extension 
+* `<your_replay>` is the filename of the replay located in /code/replays _**with**_ the filename extension - usually `.json.gz`
